@@ -1,5 +1,5 @@
 CC=cc
-PROJECT=project
+PRO=pro
 
 SRC=main.c
 OBJ=$(SRC:.c=.o)
@@ -10,24 +10,27 @@ RGB_LIBDIR=$(RGB_LIB_DISTRIBUTION)/lib
 RGB_LIBRARY_NAME=rgbmatrix
 RGB_LIBRARY=$(RGB_LIBDIR)/lib$(RGB_LIBRARY_NAME).a
 
+MAGICK_CFLAGS=$(shell pkg-config --cflags MagickWand)
+MAGICK_LDFLAGS=$(shell pkg-config --libs MagickWand)
+
 CFLAGS=-Wall -O3 -g -Wextra -Wno-unused-parameter
-CFLAGS+=-I$(RGB_INCDIR)
+CFLAGS+=-I$(RGB_INCDIR) $(MAGICK_CFLAGS)
 
-LDFLAGS+=$(RGB_LIBRARY) -lrt -lm -lpthread -lstdc++
+LDFLAGS+=$(RGB_LIBRARY) -lrt -lm -lpthread -lstdc++ $(MAGICK_LDFLAGS)
 
-all: $(PROJECT)
+all: $(PRO)
 
-$(PROJECT): $(OBJ) $(RGB_LIBRARY)
+$(PRO): $(OBJ) $(RGB_LIBRARY)
 	$(CC) $(OBJ) -o $@ $(LDFLAGS)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(RGB_LIBRARY): FORCE
+$(RGB_LIBDIR)/lib$(RGB_LIBRARY_NAME).a: FORCE
 	$(MAKE) -C $(RGB_LIB_DISTRIBUTION)
 
 clean:
-	rm -f $(OBJ) $(PROJECT)
+	rm -f $(OBJ) $(PRO)
 
 FORCE:
 
