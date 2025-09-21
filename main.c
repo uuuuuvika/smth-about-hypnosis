@@ -46,7 +46,7 @@ int load_gif_frames(const char *filename, GifFrame **frames, int *frame_count) {
         current_frame->height = MagickGetImageHeight(coalesced_wand);
         current_frame->delay = MagickGetImageDelay(coalesced_wand);
         if (current_frame->delay == 0) {
-            current_frame->delay = 10;
+            current_frame->delay = 100;
         }
         
         current_frame->pixel_data = malloc(current_frame->width * current_frame->height * 3);
@@ -74,7 +74,7 @@ int main(int argc, char **argv)
     int frame_count = 0;
     int current_frame = 0;
     
-    const char *gif_filename = "gi.gif";
+    const char *gif_filename = "gifs/38.gif";
 
     MagickWandGenesis();
 
@@ -92,7 +92,7 @@ int main(int argc, char **argv)
     options.chain_length = 2;
     options.hardware_mapping = "adafruit-hat";
     options.disable_hardware_pulsing = true;
-    options.brightness = 50;
+    //options.brightness = 0;
 
     matrix = led_matrix_create_from_options(&options, &argc, &argv);
     if (matrix == NULL) {
@@ -126,7 +126,7 @@ int main(int argc, char **argv)
         
         offscreen_canvas = led_matrix_swap_on_vsync(matrix, offscreen_canvas);
         
-        usleep(current->delay * 100000);
+        usleep(current->delay * 10000);
         
         current_frame = (current_frame + 1) % frame_count;
        
