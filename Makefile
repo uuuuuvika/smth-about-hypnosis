@@ -32,6 +32,10 @@ $(RGB_LIBDIR)/lib$(RGB_LIBRARY_NAME).a: FORCE
 clean:
 	rm -f $(OBJ) $(PRO)
 
+fclean: clean
+	$(MAKE) -C $(RGB_LIB_DISTRIBUTION) clean
+	rm -f $(PRO)
+
 FORCE:
 
-.PHONY: all clean FORCE
+.PHONY: all clean FORCE fclean

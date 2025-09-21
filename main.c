@@ -1,4 +1,5 @@
-#include <wand/MagickWand.h>
+#include <MagickWand/MagickWand.h> //for Mac
+// #include <wand/MagickWand.h> //for Linux
 #include "../rpi-rgb-led-matrix/include/led-matrix-c.h"
 
 #include <stdio.h>
@@ -79,12 +80,12 @@ int main(int argc, char **argv)
     MagickWandGenesis();
 
     if (!load_gif_frames(gif_filename, &frames, &frame_count)) {
-        printf("Failed to load GIF frames\n");
+        printf("Failed to load GIF :(\n");
         MagickWandTerminus();
         return 1;
     }
 
-    printf("Cool, loaded %d frames from GIF\n", frame_count);
+    printf("Cool coooool, loaded %d frames from GIF\n", frame_count);
 
     memset(&options, 0, sizeof(options));
     options.rows = 32;
