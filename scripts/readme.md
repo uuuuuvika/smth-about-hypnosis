@@ -30,6 +30,19 @@ Run the `video-viewer` utility. Based on [this](https://github.com/hzeller/rpi-r
 sudo ./video-viewer --led-chain=2 --led-cols=64 --led-rows=32 --led-gpio-mapping=adafruit-hat -T2 /home/pi/py/optimized-videos
 ```
 
+## Start automatically
+
+```bash
+chmod +x install-video-viewer-service.sh
+./install-video-viewer-service.sh
+```
+
+Check service logs;
+
+```bash
+journalctl -u rpi-video-viewer -f
+```
+
 ## Optimize video assets
 
 - Install `ffpmeg` : `brew install ffmpeg`
