@@ -1,6 +1,7 @@
 # How to run
 
 ## Build rpi-led-matrix library
+
 ```bash
 make -C /home/pi/py/rpi-rgb-led-matrix/lib
 ```
@@ -39,20 +40,20 @@ sudo ./video-viewer --led-chain=2 --led-cols=64 --led-rows=32 --led-gpio-mapping
 ./optimize_videos.sh
 ```
 
-
 ### Send video files to the Pi
 
 ```bash
 rsync -avz /Users/userfriendly/Dropbox/Proyectos/vika-bday-screen/optimized-videos pi@raspberrypi.local:/home/pi/py
 ```
 
-## Sync code between mac and pi
+## Sync code between Mac and Pi
 
 ```bash
 rsync -azP --delete \
   --filter=':- .gitignore' \
   --exclude='.git/' --exclude='.DS_Store' \
-  --exclude='node_modules/' --exclude='.env/' \
+  --exclude='.mp4/' --exclude='.env/' \
+  --exclude='.gif/' \
   -e ssh \
   /Users/userfriendly/code/smth-about-hypnosis/ \
   pi@raspberrypi.local:/home/pi/py/smth-about-hypnosis/
