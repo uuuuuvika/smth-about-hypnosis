@@ -5,8 +5,8 @@
 # Using 128x32 resolution, 15fps, no duration limit
 
 # Configuration - Change these folder names as needed
-INPUT_FOLDER="input"
-OUTPUT_FOLDER="output"
+INPUT_FOLDER="/Users/userfriendly/Dropbox/Proyectos/vika-bday-screen/raw-footage"
+OUTPUT_FOLDER="/Users/userfriendly/Dropbox/Proyectos/vika-bday-screen/optimized-videos"
 
 # Create directories if they don't exist
 mkdir -p "$INPUT_FOLDER"
@@ -65,7 +65,7 @@ for ext in mp4 mov avi mkv m4v MP4 MOV AVI MKV M4V; do
         # Convert video with cropping and fps limit (optimized for RGB LED matrix)
         echo "   🎥 Converting video..."
         if ffmpeg -loglevel error -i "$video_file" \
-            -vf "fps=15,scale=128:32:force_original_aspect_ratio=increase,crop=128:32" \
+            -vf "scale=128:32:force_original_aspect_ratio=increase,crop=128:32" \
             -c:v libx264 -preset slow -crf 18 -pix_fmt rgb24 \
             -an \
             -y "$output_video"; then
