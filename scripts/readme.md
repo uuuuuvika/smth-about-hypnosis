@@ -1,5 +1,34 @@
 # How to run
 
+## Build rpi-led-matrix library
+```bash
+make -C /home/pi/py/rpi-rgb-led-matrix/lib
+```
+
+## Build custom video viewer
+
+Install dependencies
+
+```bash
+sudo apt-get update
+sudo apt-get install pkg-config libavcodec-dev libavformat-dev libswscale-dev libavdevice-dev
+```
+
+Build
+
+```bash
+make -C /home/pi/py/smth-about-hypnosis/video-viewer \
+  RGB_LIB_DISTRIBUTION=/home/pi/py/rpi-rgb-led-matrix
+```
+
+## Run video viewer on the screen
+
+Run the `video-viewer` utility. Based on [this](https://github.com/hzeller/rpi-rgb-led-matrix/tree/master/utils#video-viewer).
+
+```bash
+sudo ./video-viewer --led-chain=2 --led-cols=64 --led-rows=32 --led-gpio-mapping=adafruit-hat -T2 /home/pi/py/optimized-videos
+```
+
 ## Optimize video assets
 
 - Install `ffpmeg` : `brew install ffmpeg`
@@ -10,24 +39,21 @@
 ./optimize_videos.sh
 ```
 
+
 ### Send video files to the Pi
 
 ```bash
 rsync -avz /Users/userfriendly/Dropbox/Proyectos/vika-bday-screen/optimized-videos pi@raspberrypi.local:/home/pi/py
 ```
 
-## Render videos on the screen
-
-Install dependencies and build
+## Sync code between mac and pi
 
 ```bash
-sudo apt-get update
-sudo apt-get install pkg-config libavcodec-dev libavformat-dev libswscale-dev libavdevice-dev
-make video-viewer
-```
-
-Run the `video-viewer` utility. Based on [this](https://github.com/hzeller/rpi-rgb-led-matrix/tree/master/utils#video-viewer).
-
-```bash
-sudo ./video-viewer --led-chain=2 --led-cols=64 --led-rows=32 --led-gpio-mapping=adafruit-hat -T2 /home/pi/py/optimized-videos
+rsync -azP --delete \
+  --filter=':- .gitignore' \
+  --exclude='.git/' --exclude='.DS_Store' \
+  --exclude='node_modules/' --exclude='.env/' \
+  -e ssh \
+  /Users/userfriendly/code/smth-about-hypnosis/ \
+  pi@raspberrypi.local:/home/pi/py/smth-about-hypnosis/
 ```
