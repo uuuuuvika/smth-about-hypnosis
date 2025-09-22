@@ -8,7 +8,7 @@ Type=simple
 User=root
 Group=root
 EnvironmentFile=-/etc/default/rpi-video-viewer
-ExecStart=/bin/bash -lc '/usr/local/bin/video-viewer ${VIDEO_VIEWER_OPTS:-} -T${VIDEO_THREADS:-1} ${VIDEO_INPUTS:-}'
+ExecStart=/bin/bash -lc '/usr/local/bin/video-viewer --led-chain=2 --led-cols=64 --led-rows=32 --led-gpio-mapping=adafruit-hat -T2 /home/pi/py/optimized-videos'
 Restart=always
 RestartSec=2s
 TimeoutStopSec=5s
