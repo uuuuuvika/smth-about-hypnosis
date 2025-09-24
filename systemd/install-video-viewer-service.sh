@@ -23,7 +23,9 @@ fi
 sudo tee "${UNIT}" >/dev/null <<EOF
 [Unit]
 Description=RGB LED Matrix video viewer
+Requires=rpi-video-viewer-build.service
 After=multi-user.target
+After=rpi-video-viewer-build.service
 
 [Service]
 Type=simple
