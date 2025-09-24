@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "*.cps": "javascript",
+        "stdio.h": "c",
+        "magickwand.h": "c",
+        "magick-image.h": "c",
+        "*.pages": "yaml",
+        "main.h": "c"
+    }
+}
