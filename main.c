@@ -9,23 +9,14 @@ int main(int argc, char **argv)
         {
             display_gif_on_matrix(argv[2]);
         }
-        else if (strcmp(argv[1], "text") == 0 && argc > 2)
+        else if (strcmp(argv[1], "text") == 0)
         {
-            char *text = load_text_from_file(argv[2]);
-            if (text)
-            {
-                printf("Loaded text: %s\n", text);
-                free(text);
-            }
-            else
-            {
-                printf("Failed to load text from %s\n", argv[2]);
-            }
+            display_text();
         }
-        else
-        {
-            printf("Usage: %s [gif <filename> | text <filename> | implement <something>, Esteban!]\n", argv[0]);
-        }
+    }
+    else
+    {
+        printf("Usage: %s [gif <filename> | text | implement <something>, Esteban!]\n", argv[0]);
     }
 
     return 0;

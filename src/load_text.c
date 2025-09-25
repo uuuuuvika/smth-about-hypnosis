@@ -1,6 +1,7 @@
 #include "../main.h"
 
 char* load_text_from_file(const char* filename) {
+    
     FILE *file = fopen(filename, "r");
     if (!file) return NULL;
     

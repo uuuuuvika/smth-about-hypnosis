@@ -1,7 +1,7 @@
 CC=cc
 PRO=pro
 
-SRC=main.c src/load_gif_frames.c src/load_text.c src/display_gif_frames.c
+SRC=main.c src/load_gif_frames.c src/load_text.c src/display_gif_frames.c src/display_text_ff.c
 OBJ=$(SRC:.c=.o)
 
 RGB_LIB_DISTRIBUTION=../rpi-rgb-led-matrix
