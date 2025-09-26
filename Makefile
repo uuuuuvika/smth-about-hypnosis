@@ -1,7 +1,9 @@
 CC=cc
 PRO=pro
 
-SRC=main.c src/load_gif_frames.c src/load_text.c src/display_gif_frames.c src/display_text_ff.c
+SRCDIR=src
+
+SRC=main.c $(shell find $(SRCDIR) -name "*.c" -type f)
 OBJ=$(SRC:.c=.o)
 
 RGB_LIB_DISTRIBUTION=../rpi-rgb-led-matrix
