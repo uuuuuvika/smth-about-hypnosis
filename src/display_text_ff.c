@@ -18,6 +18,7 @@ void display_text()
     options.chain_length = 2;
     options.hardware_mapping = "adafruit-hat";
     options.disable_hardware_pulsing = true;
+    options.show_refresh_rate=true;
     // options.brightness = 50;
 
     const char *font_file = "fonts/unifont.bdf";
@@ -42,8 +43,8 @@ void display_text()
     const int x_default_start = (options.chain_length * options.cols) + 5;
     int x_orig = x_default_start;
     int y_orig = 0;
-    int letter_spacing = 0;
-    float speed = 9.0f;
+    int letter_spacing = 1;
+    float speed = 50.0f;
     int loops = -1;
 
     matrix = led_matrix_create_from_options(&options, NULL, NULL);
@@ -56,9 +57,9 @@ void display_text()
     offscreen_canvas = led_matrix_create_offscreen_canvas(matrix);
     led_canvas_get_size(offscreen_canvas, &width, &height);
 
-    int delay_speed_usec = 100000;
+    int delay_speed_usec = 10000;
     if (speed > 0)
-        delay_speed_usec = 100000 / speed / font_width;
+        delay_speed_usec = 10000 / speed / font_width;
     else if (x_orig == x_default_start)
         x_orig = 0;
 
@@ -69,11 +70,11 @@ void display_text()
     while (loops != 0)
     {
         led_canvas_fill(offscreen_canvas, 0, 0, 0);
-        length = draw_text(offscreen_canvas, font, x, y + font_baseline,
-                           color.r, color.g, color.b,
+        length = draw_text(offscreen_canvas, font, x, y + font_baseline * 2,
+                           color.r , color.g, color.b,
                            text, letter_spacing);
 
-        if (speed > 0 && --x + length < 0)
+        if (speed > 0 && (x -= font_width) + length < 0)
         {
             x = x_orig;
             if (loops > 0)
@@ -81,10 +82,9 @@ void display_text()
         }
 
         offscreen_canvas = led_matrix_swap_on_vsync(matrix, offscreen_canvas);
-        usleep(delay_speed_usec);
+        //usleep(delay_speed_usec);
     }
 
-    // rgb_graphics_print(offscreen_canvas, font, x, y, color, display_text);
     led_matrix_delete(matrix);
     delete_font(font);
 
