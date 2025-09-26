@@ -21,6 +21,7 @@ void display_gif_on_matrix(const char *gif_filename) {
     }
 
     printf("Cool coooool, loaded %d frames from GIF\n", frame_count);
+    memset(&options, 0, sizeof(options));
     options.rows = 32;
     options.cols = 64;
     options.chain_length = 2;
@@ -28,8 +29,8 @@ void display_gif_on_matrix(const char *gif_filename) {
     options.disable_hardware_pulsing = true;
     options.brightness = 50;
 
-    memset(&options, 0, sizeof(options));
     matrix = led_matrix_create_from_options(&options, NULL, NULL);
+
     if (matrix == NULL) {
         for (int i = 0; i < frame_count; i++) {
             free(frames[i].pixel_data);

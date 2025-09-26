@@ -77,9 +77,7 @@ rsync selected folder:
 ```bash
 rsync -azP --delete \
   --filter=':- .gitignore' \
-  --exclude='.git/' --exclude='.DS_Store' \
-  --exclude='.mp4/' --exclude='.env/' \
-  --exclude='.gif/' \
+  --exclude='.DS_Store' \
   -e ssh \
   /Users/userfriendly/code/smth-about-hypnosis/src/media-test/ \
   pi@raspberrypi.local:/home/pi/py/smth-about-hypnosis/src/media-test/
