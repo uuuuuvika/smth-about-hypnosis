@@ -1,5 +1,5 @@
 
-#include "../main.h"
+#include "../../main.h"
 
 void display_gif_on_matrix(const char *gif_filename) {
     struct RGBLedMatrixOptions options;
@@ -59,7 +59,7 @@ void display_gif_on_matrix(const char *gif_filename) {
         
         offscreen_canvas = led_matrix_swap_on_vsync(matrix, offscreen_canvas);
         
-        usleep(current->delay * 100000);
+        usleep(current->delay * 1000);
         
         current_frame = (current_frame + 1) % frame_count;
     }

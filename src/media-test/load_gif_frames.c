@@ -1,4 +1,4 @@
-#include "../main.h"
+#include "../../main.h"
 
 int load_gif_frames(const char *filename, GifFrame **frames, int *frame_count) {
     MagickWand *wand = NewMagickWand();
