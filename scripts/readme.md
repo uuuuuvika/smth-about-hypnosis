@@ -71,3 +71,16 @@ rsync -azP --delete \
   /Users/userfriendly/code/smth-about-hypnosis/ \
   pi@raspberrypi.local:/home/pi/py/smth-about-hypnosis/
 ```
+
+rsync selected folder:
+
+```bash
+rsync -azP --delete \
+  --filter=':- .gitignore' \
+  --exclude='.git/' --exclude='.DS_Store' \
+  --exclude='.mp4/' --exclude='.env/' \
+  --exclude='.gif/' \
+  -e ssh \
+  /Users/userfriendly/code/smth-about-hypnosis/src/media-test/ \
+  pi@raspberrypi.local:/home/pi/py/smth-about-hypnosis/src/media-test/
+```
