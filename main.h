@@ -44,7 +44,28 @@ typedef struct
 
 int load_gif_frames(const char *filename, GifFrame **frames, int *frame_count);
 char *load_text_from_file(const char *filename);
-void display_gif_on_matrix(const char *gif_filename);
 void display_text();
+
+// Matrix context shared across modules
+typedef struct {
+    struct RGBLedMatrix *matrix;
+    struct LedCanvas *offscreen_canvas;
+    int width;
+    int height;
+} MatrixContext;
+
+// Matrix lifecycle owned by main
+int matrix_setup(MatrixContext *ctx);
+
+// GIF module context
+typedef struct {
+    GifFrame *frames;
+    int frame_count;
+    int current_frame;
+} GifContext;
+
+// GIF split-phase API using contexts
+int display_gif_setup(MatrixContext *mctx, GifContext *gctx, const char *gif_filename);
+void display_gif_update(MatrixContext *mctx, GifContext *gctx);
 
 #endif // MAIN_H
