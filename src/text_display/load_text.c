@@ -1,4 +1,4 @@
-#include "../main.h"
+#include "../../main.h"
 
 char *load_text_from_file(const char *filename)
 {
