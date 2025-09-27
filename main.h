@@ -63,10 +63,18 @@ typedef struct {
     int frame_count;
     int current_frame;
     int black_threshold;      // 0..255, lower means more pixels become transparent
-    unsigned char bg_r, bg_g, bg_b; // background color to fill before drawing
+    // Playlist / random playback
+    const char **playlist;    // array of file paths
+    int playlist_count;       // number of entries in playlist
+    const char *current_path; // currently loaded gif path
+    int loops_remaining;      // remaining full loops before switching gif
 } GifContext;
 
 int display_gifs_setup(MatrixContext *mctx, GifContext *a, GifContext *b, const char *file_a, const char *file_b);
 void display_gifs_update(MatrixContext *mctx, GifContext *a, GifContext *b);
+
+// Playlist-based API (layers A and B pick random gifs and loop 10..20 times)
+int display_gifs_playlist_setup(MatrixContext *mctx, GifContext *a, GifContext *b, const char **paths, int count);
+void display_gifs_playlist_update(MatrixContext *mctx, GifContext *a, GifContext *b);
 
 #endif // MAIN_H
