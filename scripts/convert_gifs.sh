@@ -4,24 +4,28 @@
 # Processes all GIF files in gifs/ folder and outputs to exported gifs/ folder
 # Using 128x32 resolution, 15fps, 3 seconds max
 
+
+INPUT_FOLDER="/Users/userfriendly/Dropbox/Proyectos/vika-bday-screen/gifs"
+OUTPUT_FOLDER="/Users/userfriendly/Dropbox/Proyectos/vika-bday-screen/optimized-gifs"
+
 # Create directories if they don't exist
-mkdir -p gifs
-mkdir -p "exported_gifs"
+mkdir -p "$INPUT_FOLDER"
+mkdir -p "$OUTPUT_FOLDER"
 
 # Check if gifs directory has any GIF files
-video_count=0
+gif_count=0
 for ext in gif GIF; do
-    if ls gifs/*.$ext >/dev/null 2>&1; then
-        video_count=$((video_count + 1))
+    if ls "$INPUT_FOLDER"/*.$ext >/dev/null 2>&1; then
+        gif_count=$((gif_count + 1))
         break
     fi
 done
 
-if [ $video_count -eq 0 ]; then
-    echo "No GIF files found in gifs/ directory"
+if [ $gif_count -eq 0 ]; then
+    echo "No GIF files found in $INPUT_FOLDER/ directory"
     echo "Supported formats: gif, GIF"
     echo "Files in gifs/:"
-    ls -la gifs/ 2>/dev/null || echo "  (directory doesn't exist or is empty)"
+    ls -la "$INPUT_FOLDER"/ 2>/dev/null || echo "  (directory doesn't exist or is empty)"
     exit 1
 fi
 
@@ -31,14 +35,14 @@ skipped=0
 file_number=1
 
 echo "Starting batch processing..."
-echo "Input folder: gifs/"
-echo "Output folder: exported_gifs/"
+echo "Input folder: $INPUT_FOLDER/"
+echo "Output folder: $OUTPUT_FOLDER/"
 echo "Settings: 128x32, 15fps, 3 seconds max"
 echo "----------------------------------------"
 
 # Process each GIF file
 for ext in gif GIF; do
-    for gif_file in gifs/*.$ext; do
+    for gif_file in "$INPUT_FOLDER"/*.$ext; do
         # Skip if file doesn't exist (handles case where no files match a pattern)
         [ ! -f "$gif_file" ] && continue
     
@@ -46,7 +50,7 @@ for ext in gif GIF; do
         filename=$(basename "$gif_file")
         
         # Output GIF path with sequential numbering
-        output_gif="exported_gifs/${file_number}.gif"
+        output_gif="$OUTPUT_FOLDER/${file_number}.gif"
         
         # Check if output already exists
         if [ -f "$output_gif" ]; then
@@ -60,7 +64,7 @@ for ext in gif GIF; do
         
         # Step 1: Generate palette
         echo "   📊 Generating color palette..."
-        if ! ffmpeg -loglevel error -t 3 -i "$gif_file" \
+        if ! ffmpeg -loglevel error -i "$gif_file" \
             -vf "fps=15,scale=128:32:force_original_aspect_ratio=increase,crop=128:32,palettegen" \
             -y palette_temp.png; then
             echo "   ❌ Error generating palette for $filename"
@@ -69,8 +73,8 @@ for ext in gif GIF; do
         
         # Step 2: Create processed GIF with palette
         echo "   🎨 Creating processed GIF..."
-        if ffmpeg -loglevel error -t 3 -i "$gif_file" -i palette_temp.png \
-            -filter_complex "fps=15,scale=128:32:force_original_aspect_ratio=increase,crop=128:32[x];[x][1:v]paletteuse" \
+        if ffmpeg -loglevel error -i "$gif_file" -i palette_temp.png \
+            -filter_complex "scale=128:32:force_original_aspect_ratio=increase,crop=128:32[x];[x][1:v]paletteuse" \
             -y "$output_gif"; then
             
             # Get file sizes for comparison
@@ -96,12 +100,12 @@ echo "----------------------------------------"
 echo "Processing complete!"
 echo "✅ Processed: $processed files"
 echo "⚠️  Skipped: $skipped files"
-echo "📁 Output folder: exported_gifs/"
+echo "📁 Output folder: $OUTPUT_FOLDER/"
 
 if [ $processed -eq 0 ]; then
     echo ""
     echo "No files were processed. Check that:"
-    echo "1. GIF files exist in gifs/ folder"
+    echo "1. GIF files exist in $INPUT_FOLDER/ folder"
     echo "2. ffmpeg is installed and accessible"
     echo "3. GIF files are in supported formats (gif, GIF)"
 fi
