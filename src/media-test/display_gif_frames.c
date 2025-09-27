@@ -1,5 +1,7 @@
 #include "../../main.h"
 #include <time.h>
+#include <dirent.h>
+#include <strings.h>
 #include "gif_playlist.h"
 
 const int max_loops = 10;
@@ -47,20 +49,46 @@ static inline int rand_range(int min_inclusive, int max_inclusive) {
 typedef struct {
     GifFrame *frames;
     int frame_count;
-    const char *name; // filename from playlist (without base path)
+    char name[256]; // filename only
 } PreloadedGif;
 
-static PreloadedGif s_preloaded[GIF_PLAYLIST_COUNT];
+static PreloadedGif s_preloaded[512];
 static int s_preloaded_count = 0;
 static int s_preloaded_ready = 0;
 
+// Scan BASE_PATH for .gif files and preload all
 static int preload_all_gifs() {
     if (s_preloaded_ready) return 1;
     s_preloaded_count = 0;
-    for (int i = 0; i < (int)GIF_PLAYLIST_COUNT; ++i) {
-        const char *name = GIF_PLAYLIST[i];
+    DIR *dir = opendir(BASE_PATH);
+    if (!dir) {
+        perror("opendir(BASE_PATH)");
+        return 0;
+    }
+    struct dirent *ent;
+    while ((ent = readdir(dir)) != NULL) {
+        const char *fname = ent->d_name;
+        size_t len = strlen(fname);
+        if (len < 5) continue; // need at least 'a.gif'
+        if (strcasecmp(fname + len - 4, ".gif") != 0) continue;
+        if (s_preloaded_count >= (int)(sizeof(s_preloaded)/sizeof(s_preloaded[0]))) break;
+
+        // Guard against excessively long paths and names
+        const size_t full_cap = 512;
+        size_t base_len = strlen(BASE_PATH);
+        if (base_len + len >= full_cap) {
+            printf("Skipping GIF (path too long): %s%s\n", BASE_PATH, fname);
+            continue;
+        }
+        if (len >= sizeof(s_preloaded[s_preloaded_count].name)) {
+            printf("Skipping GIF (name too long): %s\n", fname);
+            continue;
+        }
+
         char full_path[512];
-        snprintf(full_path, sizeof(full_path), "%s%s", BASE_PATH, name);
+        // Safe, length-checked build of full path
+        snprintf(full_path, sizeof(full_path), "%s%s", BASE_PATH, fname);
+
         GifFrame *frames = NULL;
         int frame_count = 0;
         if (!load_gif_frames(full_path, &frames, &frame_count)) {
@@ -69,9 +97,13 @@ static int preload_all_gifs() {
         }
         s_preloaded[s_preloaded_count].frames = frames;
         s_preloaded[s_preloaded_count].frame_count = frame_count;
-        s_preloaded[s_preloaded_count].name = name;
+        // Copy filename safely into fixed buffer
+        snprintf(s_preloaded[s_preloaded_count].name,
+                 sizeof(s_preloaded[s_preloaded_count].name),
+                 "%s", fname);
         s_preloaded_count++;
     }
+    closedir(dir);
     if (s_preloaded_count == 0) return 0;
     s_preloaded_ready = 1;
     return 1;
@@ -112,20 +144,16 @@ int display_gifs_setup(MatrixContext *mctx, GifContext *a, GifContext *b) {
         printf("MatrixContext not initialized.\n");
         return 0;
     }
-    if (GIF_PLAYLIST == NULL || GIF_PLAYLIST_COUNT <= 0) {
-        printf("Playlist is empty.\n");
-        return 0;
-    }
 
     MagickWandGenesis();
     // Seed random number generator
     srand((unsigned int)time(NULL));
 
-    // Assign playlists to both layers
-    a->playlist = GIF_PLAYLIST;
-    a->playlist_count = GIF_PLAYLIST_COUNT;
-    b->playlist = GIF_PLAYLIST;
-    b->playlist_count = GIF_PLAYLIST_COUNT;
+    // No static playlist anymore; we'll scan and preload
+    a->playlist = NULL;
+    a->playlist_count = 0;
+    b->playlist = NULL;
+    b->playlist_count = 0;
 
     a->black_threshold = 0;
     b->black_threshold = 32;
