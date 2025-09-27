@@ -102,7 +102,7 @@ int display_gifs_setup(MatrixContext *mctx, GifContext *a, GifContext *b) {
     b->playlist = GIF_PLAYLIST;
     b->playlist_count = GIF_PLAYLIST_COUNT;
 
-    a->black_threshold = 32;
+    a->black_threshold = 0;
     b->black_threshold = 32;
 
     // Load initial random gifs for both layers
