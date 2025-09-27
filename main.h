@@ -70,4 +70,7 @@ typedef struct {
 int display_gif_setup(MatrixContext *mctx, GifContext *gctx, const char *gif_filename);
 void display_gif_update(MatrixContext *mctx, GifContext *gctx);
 
+int display_two_gifs_setup(MatrixContext *mctx, GifContext *a, GifContext *b, const char *file_a, const char *file_b);
+void display_two_gifs_update(MatrixContext *mctx, GifContext *a, GifContext *b);
+
 #endif // MAIN_H
