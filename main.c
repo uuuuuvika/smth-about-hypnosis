@@ -6,19 +6,15 @@ int main(int argc, char **argv)
     {
         if (strcmp(argv[1], "gif") == 0)
         {
-            // Playlist mode: subsequent args are gif paths
             MatrixContext mctx = {0};
             GifContext ga = {0};
             GifContext gb = {0};
-            const char **paths = (const char**)&argv[2];
-            int count = argc - 2;
-            srand((unsigned int)time(NULL));
             if (!matrix_setup(&mctx))
             {
                 printf("Failed to setup matrix.\n");
                 return 1;
             }
-            if (!display_gifs_playlist_setup(&mctx, &ga, &gb, paths, count))
+            if (!display_gifs_playlist_setup(&mctx, &ga, &gb))
             {
                 printf("Failed to setup playlist GIF rendering.\n");
                 return 1;

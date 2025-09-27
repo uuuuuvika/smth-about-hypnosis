@@ -70,7 +70,7 @@ typedef struct {
     int loops_remaining;      // remaining full loops before switching gif
 } GifContext;
 
-int display_gifs_playlist_setup(MatrixContext *mctx, GifContext *a, GifContext *b, const char **paths, int count);
+int display_gifs_playlist_setup(MatrixContext *mctx, GifContext *a, GifContext *b);
 void display_gifs_playlist_update(MatrixContext *mctx, GifContext *a, GifContext *b);
 
 #endif // MAIN_H

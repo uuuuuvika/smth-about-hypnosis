@@ -1,7 +1,24 @@
 #include "../../main.h"
+#include <time.h>
+#include "gif_playlist.h"
 
 static inline int avg_brightness(int r, int g, int b) {
     return (r + g + b) / 3;
+}
+
+static inline void draw_frame_to_canvas(MatrixContext *mctx, GifFrame *frame, int threshold)
+{
+    for (int y = 0; y < mctx->height; ++y) {
+        for (int x = 0; x < mctx->width; ++x) {
+            int idx = (y * mctx->width + x) * 3;
+            int r = frame->pixel_data[idx];
+            int g = frame->pixel_data[idx + 1];
+            int b = frame->pixel_data[idx + 2];
+            if (avg_brightness(r, g, b) > threshold) {
+                led_canvas_set_pixel(mctx->offscreen_canvas, x, y, r, g, b);
+            }
+        }
+    }
 }
 
 static inline void free_gif_frames(GifContext *ctx) {
@@ -45,23 +62,40 @@ static int load_random_gif_for_layer(GifContext *layer) {
     return 1;
 }
 
-int display_gifs_playlist_setup(MatrixContext *mctx, GifContext *a, GifContext *b, const char **paths, int count) {
+static void advance_layer(GifContext *layer)
+{
+    layer->current_frame++;
+    if (layer->current_frame >= layer->frame_count) {
+        layer->current_frame = 0;
+        if (layer->loops_remaining > 0) layer->loops_remaining--;
+        if (layer->loops_remaining == 0) {
+            if (!load_random_gif_for_layer(layer)) {
+                // best-effort fallback: keep current and reset loops
+                layer->loops_remaining = rand_range(10, 20);
+            }
+        }
+    }
+}
+
+int display_gifs_playlist_setup(MatrixContext *mctx, GifContext *a, GifContext *b) {
     if (mctx == NULL || mctx->matrix == NULL || mctx->offscreen_canvas == NULL) {
         printf("MatrixContext not initialized.\n");
         return 0;
     }
-    if (paths == NULL || count <= 0) {
+    if (GIF_PLAYLIST == NULL || GIF_PLAYLIST_COUNT <= 0) {
         printf("Playlist is empty.\n");
         return 0;
     }
 
     MagickWandGenesis();
+    // Seed random number generator
+    srand((unsigned int)time(NULL));
 
     // Assign playlists to both layers
-    a->playlist = paths;
-    a->playlist_count = count;
-    b->playlist = paths;
-    b->playlist_count = count;
+    a->playlist = GIF_PLAYLIST;
+    a->playlist_count = GIF_PLAYLIST_COUNT;
+    b->playlist = GIF_PLAYLIST;
+    b->playlist_count = GIF_PLAYLIST_COUNT;
 
     a->black_threshold = 32;
     b->black_threshold = 32;
@@ -84,47 +118,9 @@ void display_gifs_playlist_update(MatrixContext *mctx, GifContext *a, GifContext
     GifFrame *fa = &a->frames[a->current_frame];
     GifFrame *fb = &b->frames[b->current_frame];
 
-    for (int y = 0; y < mctx->height; ++y) {
-        for (int x = 0; x < mctx->width; ++x) {
-            int idx = (y * mctx->width + x) * 3;
+    draw_frame_to_canvas(mctx, fa, a->black_threshold);
+    draw_frame_to_canvas(mctx, fb, b->black_threshold);
 
-            int ra = fa->pixel_data[idx];
-            int ga = fa->pixel_data[idx + 1];
-            int ba = fa->pixel_data[idx + 2];
-            if (avg_brightness(ra, ga, ba) > a->black_threshold) {
-                led_canvas_set_pixel(mctx->offscreen_canvas, x, y, ra, ga, ba);
-            }
-
-            int rb = fb->pixel_data[idx];
-            int gb = fb->pixel_data[idx + 1];
-            int bb = fb->pixel_data[idx + 2];
-            if (avg_brightness(rb, gb, bb) > b->black_threshold) {
-                led_canvas_set_pixel(mctx->offscreen_canvas, x, y, rb, gb, bb);
-            }
-        }
-    }
-
-    // Advance frames
-    a->current_frame++;
-    if (a->current_frame >= a->frame_count) {
-        a->current_frame = 0;
-        if (a->loops_remaining > 0) a->loops_remaining--;
-        if (a->loops_remaining == 0) {
-            if (!load_random_gif_for_layer(a)) {
-                // best-effort: keep previous if load failed
-                a->loops_remaining = rand_range(10, 20);
-            }
-        }
-    }
-
-    b->current_frame++;
-    if (b->current_frame >= b->frame_count) {
-        b->current_frame = 0;
-        if (b->loops_remaining > 0) b->loops_remaining--;
-        if (b->loops_remaining == 0) {
-            if (!load_random_gif_for_layer(b)) {
-                b->loops_remaining = rand_range(10, 20);
-            }
-        }
-    }
+    advance_layer(a);
+    advance_layer(b);
 }
