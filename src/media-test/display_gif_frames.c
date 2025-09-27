@@ -6,8 +6,7 @@ static inline int avg_brightness(int r, int g, int b) {
     return (r + g + b) / 3;
 }
 
-static inline void draw_frame_to_canvas(MatrixContext *mctx, GifFrame *frame, int threshold)
-{
+static inline void draw_frame_to_canvas(MatrixContext *mctx, GifFrame *frame, int threshold) {
     for (int y = 0; y < mctx->height; ++y) {
         for (int x = 0; x < mctx->width; ++x) {
             int idx = (y * mctx->width + x) * 3;
@@ -62,8 +61,7 @@ static int load_random_gif_for_layer(GifContext *layer) {
     return 1;
 }
 
-static void advance_layer(GifContext *layer)
-{
+static void advance_layer(GifContext *layer) {
     layer->current_frame++;
     if (layer->current_frame >= layer->frame_count) {
         layer->current_frame = 0;
