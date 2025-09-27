@@ -103,7 +103,7 @@ void display_two_gifs_update(MatrixContext *mctx, GifContext *a, GifContext *b) 
     if (b->frames == NULL || b->frame_count == 0) return;
 
     // Fill background once (using A's background color)
-    led_canvas_fill(mctx->offscreen_canvas, a->bg_r, a->bg_g, a->bg_b);
+    //led_canvas_fill(mctx->offscreen_canvas, a->bg_r, a->bg_g, a->bg_b);
 
     GifFrame *fa = &a->frames[a->current_frame];
     GifFrame *fb = &b->frames[b->current_frame];

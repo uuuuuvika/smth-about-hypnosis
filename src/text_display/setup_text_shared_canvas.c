@@ -1,0 +1,42 @@
+#include "../../main.h"
+
+int setup_text_shared_canvas(MatrixContext *mctx, Text *top, Text *bottom)
+{
+    struct Color color_top = {255, 0, 0};
+    struct Color color_bottom = {0, 0, 255};
+    if (mctx == NULL || top == NULL || bottom == NULL)
+        return 0;
+
+    const char *font_file = "fonts/unifont.bdf";
+    struct LedFont *font = load_font(font_file);
+    if (font == NULL)
+    {
+        printf("Couldn't load font '%s'\n", font_file);
+        return 0;
+    }
+    int font_width = character_width_font(font, 'W');
+    int font_baseline = baseline_font(font);
+    printf("Font '%s' loaded: char width=%d, baseline=%d\n", font_file, font_width, font_baseline);
+
+    top->font = font;
+    top->font_width = font_width;
+    top->font_baseline = font_baseline;
+    top->color = color_top;
+    top->x_orig = (mctx->width) + 5;
+    top->y_orig = font_baseline;
+    top->x = top->x_orig;
+    top->y = top->y_orig;
+    top->letter_spacing = 1;
+
+    bottom->font = font;
+    bottom->font_width = font_width;
+    bottom->font_baseline = font_baseline;
+    bottom->color = color_bottom;
+    bottom->x_orig = (mctx->width) + 5;
+    bottom->y_orig = font_baseline + 4;
+    bottom->x = bottom->x_orig;
+    bottom->y = bottom->y_orig;
+    bottom->letter_spacing = 1;
+
+    return 1;
+}
