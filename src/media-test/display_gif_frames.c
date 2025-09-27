@@ -43,27 +43,52 @@ static inline int rand_range(int min_inclusive, int max_inclusive) {
     return min_inclusive + (rand() % span);
 }
 
+// Preload storage for all GIFs so runtime switching doesn't trigger disk I/O
+typedef struct {
+    GifFrame *frames;
+    int frame_count;
+    const char *name; // filename from playlist (without base path)
+} PreloadedGif;
+
+static PreloadedGif s_preloaded[GIF_PLAYLIST_COUNT];
+static int s_preloaded_count = 0;
+static int s_preloaded_ready = 0;
+
+static int preload_all_gifs() {
+    if (s_preloaded_ready) return 1;
+    s_preloaded_count = 0;
+    for (int i = 0; i < (int)GIF_PLAYLIST_COUNT; ++i) {
+        const char *name = GIF_PLAYLIST[i];
+        char full_path[512];
+        snprintf(full_path, sizeof(full_path), "%s%s", BASE_PATH, name);
+        GifFrame *frames = NULL;
+        int frame_count = 0;
+        if (!load_gif_frames(full_path, &frames, &frame_count)) {
+            printf("Error: Could not load %s\n", full_path);
+            continue;
+        }
+        s_preloaded[s_preloaded_count].frames = frames;
+        s_preloaded[s_preloaded_count].frame_count = frame_count;
+        s_preloaded[s_preloaded_count].name = name;
+        s_preloaded_count++;
+    }
+    if (s_preloaded_count == 0) return 0;
+    s_preloaded_ready = 1;
+    return 1;
+}
+
 static int load_random_gif_for_layer(GifContext *layer) {
-    if (layer->playlist == NULL || layer->playlist_count <= 0) {
+    if (!s_preloaded_ready || s_preloaded_count <= 0) {
         return 0;
     }
-    int idx = rand_range(0, layer->playlist_count - 1);
-    const char *path = layer->playlist[idx];
-    if (path == NULL) return 0;
-
-    // Build full path using base directory
-    char full_path[512];
-    snprintf(full_path, sizeof(full_path), "%s%s", BASE_PATH, path);
-
-    // Free existing
-    free_gif_frames(layer);
-
-    if (!load_gif_frames(full_path, &layer->frames, &layer->frame_count)) {
-        printf("Failed to load GIF for layer: %s\n", full_path);
-        return 0;
-    }
+    int idx = rand_range(0, s_preloaded_count - 1);
+    PreloadedGif *sel = &s_preloaded[idx];
+    if (sel->frames == NULL || sel->frame_count <= 0) return 0;
+    // Assign pointers to preloaded frames (do not free on switch)
+    layer->frames = sel->frames;
+    layer->frame_count = sel->frame_count;
     layer->current_frame = 0;
-    layer->current_path = path;
+    layer->current_path = sel->name;
     layer->loops_remaining = rand_range(min_loops, max_loops);
     return 1;
 }
@@ -105,12 +130,16 @@ int display_gifs_setup(MatrixContext *mctx, GifContext *a, GifContext *b) {
     a->black_threshold = 0;
     b->black_threshold = 32;
 
-    // Load initial random gifs for both layers
+    // Preload all GIFs once to avoid runtime load glitches
+    if (!preload_all_gifs()) {
+        printf("Failed to preload GIFs.\n");
+        return 0;
+    }
+
+    // Pick initial random gifs for both layers from preloaded set
     if (!load_random_gif_for_layer(a)) return 0;
     if (!load_random_gif_for_layer(b)) return 0;
 
-    printf("Playlist mode: A(%d frames, loops %d) B(%d frames, loops %d)\n",
-           a->frame_count, a->loops_remaining, b->frame_count, b->loops_remaining);
     return 1;
 }
 
