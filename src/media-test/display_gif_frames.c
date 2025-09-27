@@ -82,7 +82,7 @@ static void advance_layer(GifContext *layer) {
     }
 }
 
-int display_gifs_playlist_setup(MatrixContext *mctx, GifContext *a, GifContext *b) {
+int display_gifs_setup(MatrixContext *mctx, GifContext *a, GifContext *b) {
     if (mctx == NULL || mctx->matrix == NULL || mctx->offscreen_canvas == NULL) {
         printf("MatrixContext not initialized.\n");
         return 0;
@@ -114,7 +114,7 @@ int display_gifs_playlist_setup(MatrixContext *mctx, GifContext *a, GifContext *
     return 1;
 }
 
-void display_gifs_playlist_update(MatrixContext *mctx, GifContext *a, GifContext *b) {
+void display_gifs_update(MatrixContext *mctx, GifContext *a, GifContext *b) {
     if (mctx == NULL || a == NULL || b == NULL) return;
     if (mctx->matrix == NULL || mctx->offscreen_canvas == NULL) return;
     if (a->frames == NULL || a->frame_count == 0) return;

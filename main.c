@@ -29,7 +29,7 @@ int main(int argc, char **argv){
         printf("Failed to setup matrix.\n");
         return 1;
     }
-    if (!display_gifs_playlist_setup(&mctx, &ga, &gb))
+    if (!display_gifs_setup(&mctx, &ga, &gb))
     {
         printf("Failed to setup dual GIF rendering.\n");
         return 1;
@@ -43,7 +43,7 @@ int main(int argc, char **argv){
     while (1)
     {
         led_canvas_fill(mctx.offscreen_canvas, 0, 0, 0);
-        display_gifs_playlist_update(&mctx, &ga, &gb);
+        display_gifs_update(&mctx, &ga, &gb);
         int top_text_advance = draw_text(mctx.offscreen_canvas, top_text.font, top_text.x, top_text.y,
                                         top_text.color.r, top_text.color.g, top_text.color.b,
                                         top_text.text, top_text.letter_spacing);
