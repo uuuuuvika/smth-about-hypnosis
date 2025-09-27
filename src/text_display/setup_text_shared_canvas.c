@@ -1,6 +1,6 @@
 #include "../../main.h"
 
-int setup_text_shared_canvas(MatrixContext *mctx, Text *top, Text *bottom)
+int text_setup(MatrixContext *mctx, Text *top, Text *bottom)
 {
     struct Color color_top = {255, 0, 0};
     struct Color color_bottom = {0, 0, 255};
@@ -37,6 +37,25 @@ int setup_text_shared_canvas(MatrixContext *mctx, Text *top, Text *bottom)
     bottom->x = bottom->x_orig;
     bottom->y = bottom->y_orig;
     bottom->letter_spacing = 1;
+
+    // Load text contents for top and bottom from file
+    char *top_text_content = load_text_from_file("src/text_display/ascii.txt");
+    if (top_text_content == NULL)
+    {
+        printf("Failed to load text from file.\n");
+        return 0;
+    }
+
+    char *bottom_text_content = load_text_from_file("src/text_display/ascii.txt");
+    if (bottom_text_content == NULL)
+    {
+        printf("Failed to load bottom text from file.\n");
+        free(top_text_content);
+        return 0;
+    }
+
+    top->text = top_text_content;
+    bottom->text = bottom_text_content;
 
     return 1;
 }

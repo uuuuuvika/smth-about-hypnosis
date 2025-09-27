@@ -7,23 +7,6 @@ int main(int argc, char **argv){
     Text top_text = {0};
     Text bottom_text = {0};
 
-    char *top_text_content = load_text_from_file("src/text_display/ascii.txt");
-    if (top_text_content == NULL)
-    {
-        printf("Failed to load text from file.\n");
-        free(top_text_content);
-        return 1;
-    }
-    char *bottom_text_content = load_text_from_file("src/text_display/ascii.txt");
-    if (bottom_text_content == NULL)
-    {
-        printf("Failed to load bottom text from file.\n");
-        free(top_text_content);
-        free(bottom_text_content);
-        return 1;
-    }
-    top_text.text = top_text_content;
-    bottom_text.text = bottom_text_content;
     if (!matrix_setup(&mctx))
     {
         printf("Failed to setup matrix.\n");
@@ -34,7 +17,7 @@ int main(int argc, char **argv){
         printf("Failed to setup dual GIF rendering.\n");
         return 1;
     }
-    if (!setup_text_shared_canvas(&mctx, &top_text, &bottom_text))
+    if (!text_setup(&mctx, &top_text, &bottom_text))
     {
         printf("Failed to setup text rendering.\n");
         return 1;

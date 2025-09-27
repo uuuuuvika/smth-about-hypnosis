@@ -59,6 +59,6 @@ int matrix_setup(MatrixContext *ctx);
 int display_gifs_setup(MatrixContext *mctx, GifContext *a, GifContext *b);
 void display_gifs_update(MatrixContext *mctx, GifContext *a, GifContext *b);
 
-int setup_text_shared_canvas(MatrixContext *mctx, Text *top, Text *bottom);
+int text_setup(MatrixContext *mctx, Text *top, Text *bottom);
 
 #endif
