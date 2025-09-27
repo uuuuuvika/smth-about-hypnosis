@@ -66,11 +66,7 @@ typedef struct {
     unsigned char bg_r, bg_g, bg_b; // background color to fill before drawing
 } GifContext;
 
-// GIF split-phase API using contexts
-int display_gif_setup(MatrixContext *mctx, GifContext *gctx, const char *gif_filename);
-void display_gif_update(MatrixContext *mctx, GifContext *gctx);
-
-int display_two_gifs_setup(MatrixContext *mctx, GifContext *a, GifContext *b, const char *file_a, const char *file_b);
-void display_two_gifs_update(MatrixContext *mctx, GifContext *a, GifContext *b);
+int display_gifs_setup(MatrixContext *mctx, GifContext *a, GifContext *b, const char *file_a, const char *file_b);
+void display_gifs_update(MatrixContext *mctx, GifContext *a, GifContext *b);
 
 #endif // MAIN_H
