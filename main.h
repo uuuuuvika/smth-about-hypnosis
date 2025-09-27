@@ -70,10 +70,6 @@ typedef struct {
     int loops_remaining;      // remaining full loops before switching gif
 } GifContext;
 
-int display_gifs_setup(MatrixContext *mctx, GifContext *a, GifContext *b, const char *file_a, const char *file_b);
-void display_gifs_update(MatrixContext *mctx, GifContext *a, GifContext *b);
-
-// Playlist-based API (layers A and B pick random gifs and loop 10..20 times)
 int display_gifs_playlist_setup(MatrixContext *mctx, GifContext *a, GifContext *b, const char **paths, int count);
 void display_gifs_playlist_update(MatrixContext *mctx, GifContext *a, GifContext *b);
 
