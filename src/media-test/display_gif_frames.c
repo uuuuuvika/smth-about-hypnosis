@@ -34,9 +34,12 @@ static void show_loading_text(MatrixContext *mctx)
     mctx->offscreen_canvas = led_matrix_swap_on_vsync(mctx->matrix, mctx->offscreen_canvas);
     delete_font(font);
 }
-static inline void draw_frame_to_canvas(MatrixContext *mctx, GifFrame *frame, int threshold) {
+static inline void draw_frame_to_canvas(MatrixContext *mctx, GifFrame *frame, int threshold, int x_start, int x_end) {
+    if (x_start < 0) x_start = 0;
+    if (x_end > mctx->width) x_end = mctx->width;
+    if (x_start >= x_end) return;
     for (int y = 0; y < mctx->height; ++y) {
-        for (int x = 0; x < mctx->width; ++x) {
+        for (int x = x_start; x < x_end; ++x) {
             int idx = (y * mctx->width + x) * 3;
             int r = frame->pixel_data[idx];
             int g = frame->pixel_data[idx + 1];
@@ -197,7 +200,7 @@ int display_gifs_setup(MatrixContext *mctx, GifContext *a, GifContext *b) {
     return 1;
 }
 
-void display_gifs_update(MatrixContext *mctx, GifContext *a, GifContext *b) {
+void display_gifs_update(MatrixContext *mctx, GifContext *a, GifContext *b, int overdraw_left) {
     if (mctx == NULL || a == NULL || b == NULL) return;
     if (mctx->matrix == NULL || mctx->offscreen_canvas == NULL) return;
     if (a->frames == NULL || a->frame_count == 0) return;
@@ -205,9 +208,13 @@ void display_gifs_update(MatrixContext *mctx, GifContext *a, GifContext *b) {
 
     GifFrame *fa = &a->frames[a->current_frame];
     GifFrame *fb = &b->frames[b->current_frame];
+    int mid = mctx->width / 2;
+    int x_start = overdraw_left ? mid : 0;
+    int x_end = overdraw_left ? mctx->width : mid;
 
-    draw_frame_to_canvas(mctx, fa, a->black_threshold);
-    draw_frame_to_canvas(mctx, fb, b->black_threshold);
+    // Draw both layers constrained to the selected half
+    draw_frame_to_canvas(mctx, fa, a->black_threshold, x_start, x_end);
+    draw_frame_to_canvas(mctx, fb, b->black_threshold, x_start, x_end);
 
     advance_layer(a);
     advance_layer(b);
