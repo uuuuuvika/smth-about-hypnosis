@@ -2,6 +2,9 @@
 #include <time.h>
 #include "gif_playlist.h"
 
+const int max_loops = 10;
+const int min_loops = 5;
+
 static inline int avg_brightness(int r, int g, int b) {
     return (r + g + b) / 3;
 }
@@ -48,16 +51,20 @@ static int load_random_gif_for_layer(GifContext *layer) {
     const char *path = layer->playlist[idx];
     if (path == NULL) return 0;
 
+    // Build full path using base directory
+    char full_path[512];
+    snprintf(full_path, sizeof(full_path), "%s%s", BASE_PATH, path);
+
     // Free existing
     free_gif_frames(layer);
 
-    if (!load_gif_frames(path, &layer->frames, &layer->frame_count)) {
-        printf("Failed to load GIF for layer: %s\n", path);
+    if (!load_gif_frames(full_path, &layer->frames, &layer->frame_count)) {
+        printf("Failed to load GIF for layer: %s\n", full_path);
         return 0;
     }
     layer->current_frame = 0;
     layer->current_path = path;
-    layer->loops_remaining = rand_range(10, 20);
+    layer->loops_remaining = rand_range(min_loops, max_loops);
     return 1;
 }
 
