@@ -26,23 +26,8 @@ int main(int argc, char **argv){
     while (1)
     {
         led_canvas_fill(mctx.offscreen_canvas, 0, 0, 0);
-        int top_text_advance = draw_text(mctx.offscreen_canvas, top_text.font, top_text.x, top_text.y,
-            top_text.color.r, top_text.color.g, top_text.color.b,
-            top_text.text, top_text.letter_spacing);
-            
-            int bottom_text_advance = draw_text(mctx.offscreen_canvas, bottom_text.font, bottom_text.x, bottom_text.y,
-                bottom_text.color.r, bottom_text.color.g, bottom_text.color.b,
-                bottom_text.text, bottom_text.letter_spacing);
-                top_text.x -= 1;
-                bottom_text.x -= 1;
-                
-                if (top_text.x + top_text_advance < 0)
-                top_text.x = top_text.x_orig;
-            if (bottom_text.x + bottom_text_advance < 0)
-            bottom_text.x = bottom_text.x_orig;    
-        
         display_gifs_update(&mctx, &ga, &gb);
-            
+        text_update(&mctx, &top_text, &bottom_text);
         mctx.offscreen_canvas = led_matrix_swap_on_vsync(mctx.matrix, mctx.offscreen_canvas);
         //usleep(100000);
     }

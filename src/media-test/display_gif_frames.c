@@ -36,7 +36,7 @@ static void show_loading_text(MatrixContext *mctx)
 }
 static inline void draw_frame_to_canvas(MatrixContext *mctx, GifFrame *frame, int threshold) {
     for (int y = 0; y < mctx->height; ++y) {
-        for (int x = 64; x < mctx->width; ++x) {
+        for (int x = 0; x < mctx->width; ++x) {
             int idx = (y * mctx->width + x) * 3;
             int r = frame->pixel_data[idx];
             int g = frame->pixel_data[idx + 1];
