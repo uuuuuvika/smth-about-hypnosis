@@ -42,7 +42,10 @@ int main(int argc, char **argv)
             }
             while (1)
             {
+                // reset canvas
                 display_gif_update(&mctx, &gctx);
+                mctx.offscreen_canvas = led_matrix_swap_on_vsync(mctx.matrix, mctx.offscreen_canvas);
+                usleep(10000);
             }
         }
         else if (strcmp(argv[1], "text") == 0)

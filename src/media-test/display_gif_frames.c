@@ -45,8 +45,5 @@ void display_gif_update(MatrixContext *mctx, GifContext *gctx) {
         }
     }
 
-    mctx->offscreen_canvas = led_matrix_swap_on_vsync(mctx->matrix, mctx->offscreen_canvas);
-    usleep(current->delay * 10000);
-
     gctx->current_frame = (gctx->current_frame + 1) % gctx->frame_count;
 }
