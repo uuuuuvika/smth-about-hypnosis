@@ -11,9 +11,32 @@ static inline int avg_brightness(int r, int g, int b) {
     return (r + g + b) / 3;
 }
 
+static void show_loading_text(MatrixContext *mctx)
+{
+    if (mctx == NULL || mctx->matrix == NULL || mctx->offscreen_canvas == NULL) return;
+    const char *msg = "loading media";
+    const char *font_file = "fonts/unifont.bdf";
+    struct LedFont *font = load_font(font_file);
+    if (font == NULL) {
+        led_canvas_fill(mctx->offscreen_canvas, 0, 0, 0);
+        mctx->offscreen_canvas = led_matrix_swap_on_vsync(mctx->matrix, mctx->offscreen_canvas);
+        return;
+    }
+    int font_width = character_width_font(font, 'W');
+    int baseline = baseline_font(font);
+    int text_width = (int)strlen(msg) * font_width;
+    int x = (mctx->width - text_width) / 2;
+    if (x < 0) x = 0;
+    int y = baseline + (mctx->height - baseline) / 2;
+
+    led_canvas_fill(mctx->offscreen_canvas, 0, 0, 0);
+    draw_text(mctx->offscreen_canvas, font, x, y, 255, 255, 255, msg, 1);
+    mctx->offscreen_canvas = led_matrix_swap_on_vsync(mctx->matrix, mctx->offscreen_canvas);
+    delete_font(font);
+}
 static inline void draw_frame_to_canvas(MatrixContext *mctx, GifFrame *frame, int threshold) {
     for (int y = 0; y < mctx->height; ++y) {
-        for (int x = 0; x < mctx->width; ++x) {
+        for (int x = 64; x < mctx->width; ++x) {
             int idx = (y * mctx->width + x) * 3;
             int r = frame->pixel_data[idx];
             int g = frame->pixel_data[idx + 1];
@@ -157,6 +180,9 @@ int display_gifs_setup(MatrixContext *mctx, GifContext *a, GifContext *b) {
 
     a->black_threshold = 0;
     b->black_threshold = 32;
+
+    // Show loading notice while preloading from disk
+    show_loading_text(mctx);
 
     // Preload all GIFs once to avoid runtime load glitches
     if (!preload_all_gifs()) {
