@@ -1,5 +1,8 @@
-
 #include "../../main.h"
+
+static inline int avg_brightness(int r, int g, int b) {
+    return (r + g + b) / 3;
+}
 
 int display_gif_setup(MatrixContext *mctx, GifContext *gctx, const char *gif_filename) {
     if (gctx->frames != NULL) {
@@ -22,6 +25,12 @@ int display_gif_setup(MatrixContext *mctx, GifContext *gctx, const char *gif_fil
     }
 
     gctx->current_frame = 0;
+
+    gctx->bg_r = 0;
+    gctx->bg_g = 0;
+    gctx->bg_b = 255;
+    gctx->black_threshold = 32;
+
     return 1;
 }
 
@@ -33,6 +42,8 @@ void display_gif_update(MatrixContext *mctx, GifContext *gctx) {
         return;
     }
 
+    led_canvas_fill(mctx->offscreen_canvas, gctx->bg_r, gctx->bg_g, gctx->bg_b);
+
     GifFrame *current = &gctx->frames[gctx->current_frame];
 
     for (int y = 0; y < mctx->height; ++y) {
@@ -41,6 +52,11 @@ void display_gif_update(MatrixContext *mctx, GifContext *gctx) {
             int red = current->pixel_data[pixel_idx];
             int green = current->pixel_data[pixel_idx + 1];
             int blue = current->pixel_data[pixel_idx + 2];
+
+            if (avg_brightness(red, green, blue) <= gctx->black_threshold) {
+                continue;
+            }
+
             led_canvas_set_pixel(mctx->offscreen_canvas, x, y, red, green, blue);
         }
     }

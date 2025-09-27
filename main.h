@@ -62,6 +62,8 @@ typedef struct {
     GifFrame *frames;
     int frame_count;
     int current_frame;
+    int black_threshold;      // 0..255, lower means more pixels become transparent
+    unsigned char bg_r, bg_g, bg_b; // background color to fill before drawing
 } GifContext;
 
 // GIF split-phase API using contexts

@@ -74,7 +74,7 @@ for ext in gif GIF; do
         # Step 2: Create processed GIF with palette
         echo "   🎨 Creating processed GIF..."
         if ffmpeg -loglevel error -i "$gif_file" -i palette_temp.png \
-            -filter_complex "scale=128:32:force_original_aspect_ratio=increase,crop=128:32[x];[x][1:v]paletteuse" \
+            -filter_complex "fps=15,scale=128:32:force_original_aspect_ratio=increase,crop=128:32[x];[x][1:v]paletteuse" \
             -y "$output_gif"; then
             
             # Get file sizes for comparison
