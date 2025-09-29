@@ -3,10 +3,10 @@
 int text_setup(MatrixContext *mctx, Text *top, Text *bottom)
 {
     if (mctx == NULL || top == NULL || bottom == NULL)
-        return 0;
+    return 0;
 
-    struct Color color_top = {255, 0, 0};
-    struct Color color_bottom = {0, 0, 255};
+struct Color color_top = {255, 0, 0};
+struct Color color_bottom = {0, 0, 255};
     const char *font_file = "fonts/unifont.bdf";
 
     struct LedFont *font = load_font(font_file);
@@ -35,7 +35,7 @@ int text_setup(MatrixContext *mctx, Text *top, Text *bottom)
     bottom->font_baseline = font_baseline;
     bottom->color = color_bottom;
     bottom->x_orig = (mctx->width) + 5;
-    bottom->y_orig = font_baseline + 4;
+    bottom->y_orig = font_baseline + 6;
     bottom->x = bottom->x_orig;
     bottom->y = bottom->y_orig;
     bottom->letter_spacing = 1;

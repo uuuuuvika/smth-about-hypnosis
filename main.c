@@ -12,6 +12,13 @@ static void overdraw_half(struct LedCanvas *canvas, int width, int height, int l
     }
 }
 
+static inline int rand_range_int(int min_inclusive, int max_inclusive)
+{
+    if (max_inclusive <= min_inclusive) return min_inclusive;
+    int span = max_inclusive - min_inclusive + 1;
+    return min_inclusive + (rand() % span);
+}
+
 int main(int argc, char **argv){
     MatrixContext mctx = {0};
     GifContext ga = {0};
@@ -48,31 +55,46 @@ int main(int argc, char **argv){
         return 1;
     }
     
-    int frame_counter = 0;
-    int overdraw_left = 1;
-    const int toggle_every_n_frames = 300;
+    int mode = 0;
+    const int mode_min_frames = 180;
+    const int mode_max_frames = 1600;
+    int frames_in_mode = 0;
+    int mode_frames = rand_range_int(mode_min_frames, mode_max_frames);
+
     while (1)
     {
         led_canvas_fill(mctx.offscreen_canvas, 0, 0, 0);
-        text_update(&mctx, &top_text, &bottom_text);
-        
-        if (frame_counter % toggle_every_n_frames == 0) {
-            overdraw_left = !overdraw_left;
-        }
-        overdraw_half(mctx.offscreen_canvas, mctx.width, mctx.height, overdraw_left ? 0 : 1);
 
-        display_gifs_update(&mctx, &ga, &gb, overdraw_left);
+        switch (mode) {
+            case 0: // A: Text & GIF on both sides
+                text_update(&mctx, &top_text, &bottom_text);
+                display_gifs_update(&mctx, &ga, &gb, -1); // both halves
+                break;
+            case 1: // B: Left GIF only, Right Text only
+                text_update(&mctx, &top_text, &bottom_text);
+                overdraw_half(mctx.offscreen_canvas, mctx.width, mctx.height, 1); // clear left half
+                display_gifs_update(&mctx, &ga, &gb, 0); // draw GIF left half
+                break;
+            case 2: // C: Left Text only, Right GIF only
+                text_update(&mctx, &top_text, &bottom_text);
+                overdraw_half(mctx.offscreen_canvas, mctx.width, mctx.height, 0); // clear right half
+                display_gifs_update(&mctx, &ga, &gb, 1); // draw GIF right half
+                break;
+            case 3: // D: GIF on both sides, no Text
+                display_gifs_update(&mctx, &ga, &gb, -1); // both halves
+                break;
+        }
 
         mctx.offscreen_canvas = led_matrix_swap_on_vsync(mctx.matrix, mctx.offscreen_canvas);
-    //usleep(100000);
-    frame_counter++;
+
+        frames_in_mode++;
+        if (frames_in_mode >= mode_frames) {
+            mode = (mode + 1) % 4;
+            frames_in_mode = 0;
+            mode_frames = rand_range_int(mode_min_frames, mode_max_frames);
+        }
+        //usleep(100000);
     }
-    led_matrix_destroy(mctx.matrix);
-    free_gif_frames(&ga);
-    free_gif_frames(&gb);
-    delete_font(top_text.font);
-    free(top_text.text);
-    free(bottom_text.text);
 
     return 0;
 }

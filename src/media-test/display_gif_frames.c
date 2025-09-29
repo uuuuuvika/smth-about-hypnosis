@@ -200,7 +200,7 @@ int display_gifs_setup(MatrixContext *mctx, GifContext *a, GifContext *b) {
     return 1;
 }
 
-void display_gifs_update(MatrixContext *mctx, GifContext *a, GifContext *b, int overdraw_left) {
+void display_gifs_update(MatrixContext *mctx, GifContext *a, GifContext *b, int half_mode) {
     if (mctx == NULL || a == NULL || b == NULL) return;
     if (mctx->matrix == NULL || mctx->offscreen_canvas == NULL) return;
     if (a->frames == NULL || a->frame_count == 0) return;
@@ -209,10 +209,16 @@ void display_gifs_update(MatrixContext *mctx, GifContext *a, GifContext *b, int 
     GifFrame *fa = &a->frames[a->current_frame];
     GifFrame *fb = &b->frames[b->current_frame];
     int mid = mctx->width / 2;
-    int x_start = overdraw_left ? mid : 0;
-    int x_end = overdraw_left ? mctx->width : mid;
 
-    // Draw both layers constrained to the selected half
+    int x_start = 0;
+    int x_end = mctx->width;
+    if (half_mode == 0) { // left half
+        x_start = 0; x_end = mid;
+    } else if (half_mode == 1) { // right half
+        x_start = mid; x_end = mctx->width;
+    }
+
+    // Draw both layers constrained to the selected region
     draw_frame_to_canvas(mctx, fa, a->black_threshold, x_start, x_end);
     draw_frame_to_canvas(mctx, fb, b->black_threshold, x_start, x_end);
 
