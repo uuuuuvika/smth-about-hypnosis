@@ -3,6 +3,7 @@
 int matrix_setup(MatrixContext *ctx)
 {
     struct RGBLedMatrixOptions options;
+
     memset(&options, 0, sizeof(options));
     options.rows = 32;
     options.cols = 64;
@@ -14,10 +15,11 @@ int matrix_setup(MatrixContext *ctx)
     ctx->matrix = led_matrix_create_from_options(&options, NULL, NULL);
     if (ctx->matrix == NULL)
     {
+        printf("Failed to create LED matrix.\n");
         return 0;
     }
-
     ctx->offscreen_canvas = led_matrix_create_offscreen_canvas(ctx->matrix);
     led_canvas_get_size(ctx->offscreen_canvas, &ctx->width, &ctx->height);
+
     return 1;
 }
