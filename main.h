@@ -1,8 +1,8 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-//#include <MagickWand/MagickWand.h> //for Mac
-#include <wand/MagickWand.h> //for Linux
+#include <MagickWand/MagickWand.h> //for Mac
+//#include <wand/MagickWand.h> //for Linux
 
 #include <led-matrix-c.h>
 #include "led-matrix-c.h"

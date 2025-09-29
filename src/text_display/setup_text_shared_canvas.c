@@ -2,18 +2,20 @@
 
 int text_setup(MatrixContext *mctx, Text *top, Text *bottom)
 {
-    struct Color color_top = {255, 0, 0};
-    struct Color color_bottom = {0, 0, 255};
     if (mctx == NULL || top == NULL || bottom == NULL)
         return 0;
 
+    struct Color color_top = {255, 0, 0};
+    struct Color color_bottom = {0, 0, 255};
     const char *font_file = "fonts/unifont.bdf";
+
     struct LedFont *font = load_font(font_file);
     if (font == NULL)
     {
         printf("Couldn't load font '%s'\n", font_file);
         return 0;
     }
+
     int font_width = character_width_font(font, 'W');
     int font_baseline = baseline_font(font);
     printf("Font '%s' loaded: char width=%d, baseline=%d\n", font_file, font_width, font_baseline);

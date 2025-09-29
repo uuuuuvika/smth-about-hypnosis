@@ -22,16 +22,29 @@ int main(int argc, char **argv){
     if (!matrix_setup(&mctx))
     {
         printf("Failed to setup matrix.\n");
+        led_matrix_destroy(mctx.matrix);
         return 1;
     }
     if (!display_gifs_setup(&mctx, &ga, &gb))
     {
         printf("Failed to setup dual GIF rendering.\n");
+        led_matrix_destroy(mctx.matrix);
+        free_gif_frames(&ga);
+        free_gif_frames(&gb);
+        delete_font(top_text.font);
+        free(top_text.text);
+        free(bottom_text.text);
         return 1;
     }
     if (!text_setup(&mctx, &top_text, &bottom_text))
     {
         printf("Failed to setup text rendering.\n");
+        led_matrix_destroy(mctx.matrix);
+        free_gif_frames(&ga);
+        free_gif_frames(&gb);
+        delete_font(top_text.font);
+        free(top_text.text);
+        free(bottom_text.text);
         return 1;
     }
     
@@ -51,9 +64,15 @@ int main(int argc, char **argv){
         display_gifs_update(&mctx, &ga, &gb, overdraw_left);
 
         mctx.offscreen_canvas = led_matrix_swap_on_vsync(mctx.matrix, mctx.offscreen_canvas);
-        //usleep(100000);
-        frame_counter++;
+    //usleep(100000);
+    frame_counter++;
     }
+    led_matrix_destroy(mctx.matrix);
+    free_gif_frames(&ga);
+    free_gif_frames(&gb);
+    delete_font(top_text.font);
+    free(top_text.text);
+    free(bottom_text.text);
 
     return 0;
 }
