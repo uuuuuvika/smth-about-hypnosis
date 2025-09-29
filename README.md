@@ -20,15 +20,23 @@ or
 make pro && sudo ./pro
 ```
 
-## Utils
-
-### Start service
+or
 
 ```bash
-#!/bin/bash
-set -euo pipefail
-sudo systemctl start rpi-video-viewer
-sudo systemctl status rpi-video-viewer --no-pager || true
+make clean && make all && sudo ./pro pro
+```
+
+## Auto start setup
+
+```bash
+chmod +x install.sh
+./install.sh
+```
+
+Check service logs;
+
+```bash
+journalctl -u smth-about-hypnosis -f
 ```
 
 ### Stop service
@@ -36,6 +44,15 @@ sudo systemctl status rpi-video-viewer --no-pager || true
 ```bash
 #!/bin/bash
 set -euo pipefail
-sudo systemctl stop rpi-video-viewer
-sudo systemctl status rpi-video-viewer --no-pager || true
+sudo systemctl stop smth-about-hypnosis
+sudo systemctl status smth-about-hypnosis --no-pager || true
+```
+
+### Start service
+
+```bash
+#!/bin/bash
+set -euo pipefail
+sudo systemctl start smth-about-hypnosis
+sudo systemctl status smth-about-hypnosis --no-pager || true
 ```

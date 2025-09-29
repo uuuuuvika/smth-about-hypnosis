@@ -51,7 +51,7 @@ static inline void draw_frame_to_canvas(MatrixContext *mctx, GifFrame *frame, in
     }
 }
 
-static inline void free_gif_frames(GifContext *ctx) {
+void free_gif_frames(GifContext *ctx) {
     if (ctx == NULL || ctx->frames == NULL) return;
     // Frames' pixel_data allocated per frame; free them individually
     for (int i = 0; i < ctx->frame_count; ++i) {
@@ -71,7 +71,7 @@ static inline int rand_range(int min_inclusive, int max_inclusive) {
     return min_inclusive + (rand() % span);
 }
 
-// Preload storage for all GIFs so runtime switching doesn't trigger disk I/O
+// Preload storage for all GIFs
 typedef struct {
     GifFrame *frames;
     int frame_count;
