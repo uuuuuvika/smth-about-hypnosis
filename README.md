@@ -11,20 +11,9 @@ ssh pi@raspberrypi.local
 ### Build and Run
 
 ```bash
-make all && sudo ./pro
-```
-
-or
-
-```bash
 make pro && sudo ./pro
 ```
-
-or
-
-```bash
-make clean && make all && sudo ./pro pro
-```
+this will also build rpi-rgb-led-matrix library which is in our case located in the parent directory
 
 ## Auto start setup
 

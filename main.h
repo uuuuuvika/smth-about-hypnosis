@@ -1,17 +1,19 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-//#include <MagickWand/MagickWand.h> //for Mac
-#include <wand/MagickWand.h> //for Linux
+#include <MagickWand/MagickWand.h> //for Mac
+// #include <wand/MagickWand.h> //for Linux
 
 #include <led-matrix-c.h>
-#include "led-matrix-c.h"
-#include "stb_image.h"
+// #include "led-matrix-c.h"
 
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <time.h>
+#include <dirent.h>
+#include <strings.h>
 
 typedef struct
 {
@@ -20,13 +22,17 @@ typedef struct
     int height;
     int delay;
 } GifFrame;
-typedef struct {
+
+typedef struct
+{
     struct RGBLedMatrix *matrix;
     struct LedCanvas *offscreen_canvas;
     int width;
     int height;
 } MatrixContext;
-typedef struct {
+
+typedef struct
+{
     GifFrame *frames;
     int frame_count;
     int current_frame;
@@ -37,7 +43,8 @@ typedef struct {
     int loops_remaining;
 } GifContext;
 
-typedef struct {
+typedef struct
+{
     struct LedFont *font;
     int font_width;
     int font_baseline;
@@ -50,11 +57,13 @@ typedef struct {
     int letter_spacing;
 } Text;
 
+int matrix_setup(MatrixContext *ctx);
+void overdraw_half(struct LedCanvas *canvas, int width, int height, int left_half);
+int rand_range_int(int min_inclusive, int max_inclusive);
+
 int load_gif_frames(const char *filename, GifFrame **frames, int *frame_count);
 char *load_text_from_file(const char *filename);
-void display_text();
 
-int matrix_setup(MatrixContext *ctx);
 
 int display_gifs_setup(MatrixContext *mctx, GifContext *a, GifContext *b);
 void display_gifs_update(MatrixContext *mctx, GifContext *a, GifContext *b, int half_mode);
