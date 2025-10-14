@@ -13,6 +13,7 @@ ssh pi@raspberrypi.local
 ```bash
 make pro && sudo ./pro
 ```
+
 this will also build rpi-rgb-led-matrix library which is in our case located in the parent directory
 
 ## Auto start setup
@@ -28,6 +29,15 @@ Check service logs;
 journalctl -u smth-about-hypnosis -f
 ```
 
+### Start service
+
+```bash
+#!/bin/bash
+set -euo pipefail
+sudo systemctl start smth-about-hypnosis
+sudo systemctl status smth-about-hypnosis --no-pager || true
+```
+
 ### Stop service
 
 ```bash
@@ -37,11 +47,11 @@ sudo systemctl stop smth-about-hypnosis
 sudo systemctl status smth-about-hypnosis --no-pager || true
 ```
 
-### Start service
+### Disable service
 
 ```bash
 #!/bin/bash
 set -euo pipefail
-sudo systemctl start smth-about-hypnosis
-sudo systemctl status smth-about-hypnosis --no-pager || true
+sudo systemctl stop smth-about-hypnosis
+sudo systemctl disable smth-about-hypnosis
 ```
