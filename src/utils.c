@@ -47,7 +47,7 @@ void show_loading_text(MatrixContext *mctx)
 {
     if (mctx == NULL || mctx->matrix == NULL || mctx->offscreen_canvas == NULL)
         return;
-    const char *msg = "I'm loading media... Please wait. Thank.";
+    const char *msg = "I'm loading media...";
     const char *font_file = "fonts/unifont.bdf";
     struct LedFont *font = load_font(font_file);
     if (font == NULL)

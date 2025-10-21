@@ -7,7 +7,7 @@ int avg_brightness(int r, int g, int b) {
     return (r + g + b) / 3;
 }
 
-static inline void draw_frame_to_canvas(MatrixContext *mctx, GifFrame *frame, int threshold, int x_start, int x_end) {
+void draw_frame_to_canvas(MatrixContext *mctx, GifFrame *frame, int threshold, int x_start, int x_end) {
     if (x_start < 0) x_start = 0;
     if (x_end > mctx->width) x_end = mctx->width;
     if (x_start >= x_end) return;
