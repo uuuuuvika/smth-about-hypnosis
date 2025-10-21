@@ -7,6 +7,7 @@ int text_setup(MatrixContext *mctx, Text *top, Text *bottom)
 
     struct Color color_top = {255, 0, 0};
     struct Color color_bottom = {0, 0, 255};
+    
     const char *font_file = "fonts/unifont.bdf";
     struct LedFont *font = load_font(font_file);
     if (font == NULL)
@@ -17,7 +18,7 @@ int text_setup(MatrixContext *mctx, Text *top, Text *bottom)
 
     int font_width = character_width_font(font, 'W');
     int font_baseline = baseline_font(font);
-    char *text_content = load_text_from_file("src/text_display/ascii.txt");
+    char *text_content = load_text_from_file("src/text_scroller/ascii.txt");
     if (text_content == NULL)
     {
         printf("Failed to load text from file.\n");

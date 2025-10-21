@@ -1,74 +1,31 @@
 #include "../../main.h"
-#include "gif_playlist.h"
 
 const int max_loops = 10;
 const int min_loops = 5;
 
-static inline int avg_brightness(int r, int g, int b) {
+int avg_brightness(int r, int g, int b) {
     return (r + g + b) / 3;
 }
 
-static void show_loading_text(MatrixContext *mctx)
-{
-    if (mctx == NULL || mctx->matrix == NULL || mctx->offscreen_canvas == NULL) return;
-    const char *msg = "loading media";
-    const char *font_file = "fonts/unifont.bdf";
-    struct LedFont *font = load_font(font_file);
-    if (font == NULL) {
-        led_canvas_fill(mctx->offscreen_canvas, 0, 0, 0);
-        mctx->offscreen_canvas = led_matrix_swap_on_vsync(mctx->matrix, mctx->offscreen_canvas);
-        return;
-    }
-    int font_width = character_width_font(font, 'W');
-    int baseline = baseline_font(font);
-    int text_width = (int)strlen(msg) * font_width;
-    int x = (mctx->width - text_width) / 2;
-    if (x < 0) x = 0;
-    int y = baseline + (mctx->height - baseline) / 2;
-
-    led_canvas_fill(mctx->offscreen_canvas, 0, 0, 0);
-    draw_text(mctx->offscreen_canvas, font, x, y, 255, 255, 255, msg, 1);
-    mctx->offscreen_canvas = led_matrix_swap_on_vsync(mctx->matrix, mctx->offscreen_canvas);
-    delete_font(font);
-}
 static inline void draw_frame_to_canvas(MatrixContext *mctx, GifFrame *frame, int threshold, int x_start, int x_end) {
     if (x_start < 0) x_start = 0;
     if (x_end > mctx->width) x_end = mctx->width;
     if (x_start >= x_end) return;
+
     for (int y = 0; y < mctx->height; ++y) {
         for (int x = x_start; x < x_end; ++x) {
             int idx = (y * mctx->width + x) * 3;
             int r = frame->pixel_data[idx];
             int g = frame->pixel_data[idx + 1];
             int b = frame->pixel_data[idx + 2];
-            if (avg_brightness(r, g, b) > threshold) {
+            // if (avg_brightness(r, g, b) > threshold) {
                 led_canvas_set_pixel(mctx->offscreen_canvas, x, y, r, g, b);
-            }
+            // }
         }
     }
 }
 
-void free_gif_frames(GifContext *ctx) {
-    if (ctx == NULL || ctx->frames == NULL) return;
-    // Frames' pixel_data allocated per frame; free them individually
-    for (int i = 0; i < ctx->frame_count; ++i) {
-        if (ctx->frames[i].pixel_data) {
-            free(ctx->frames[i].pixel_data);
-            ctx->frames[i].pixel_data = NULL;
-        }
-    }
-    free(ctx->frames);
-    ctx->frames = NULL;
-    ctx->frame_count = 0;
-}
-
-static inline int rand_range(int min_inclusive, int max_inclusive) {
-    if (max_inclusive <= min_inclusive) return min_inclusive;
-    int span = max_inclusive - min_inclusive + 1;
-    return min_inclusive + (rand() % span);
-}
-
-// Preload storage for all GIFs
+// Preload storage for all GIFs  ############### Get it out of here, Esteban!
 typedef struct {
     GifFrame *frames;
     int frame_count;
@@ -170,14 +127,13 @@ int display_gifs_setup(MatrixContext *mctx, GifContext *a, GifContext *b) {
 
     MagickWandGenesis();
     // Seed random number generator
-    srand((unsigned int)time(NULL));
+    //srand((unsigned int)time(NULL));
 
     // No static playlist anymore; we'll scan and preload
     a->playlist = NULL;
     a->playlist_count = 0;
     b->playlist = NULL;
     b->playlist_count = 0;
-
     a->black_threshold = 0;
     b->black_threshold = 32;
 
@@ -209,13 +165,12 @@ void display_gifs_update(MatrixContext *mctx, GifContext *a, GifContext *b, int 
 
     int x_start = 0;
     int x_end = mctx->width;
-    if (half_mode == 0) { // left half
+    if (half_mode == 0) {
         x_start = 0; x_end = mid;
-    } else if (half_mode == 1) { // right half
+    } else if (half_mode == 1) {
         x_start = mid; x_end = mctx->width;
     }
 
-    // Draw both layers constrained to the selected region
     draw_frame_to_canvas(mctx, fa, a->black_threshold, x_start, x_end);
     draw_frame_to_canvas(mctx, fb, b->black_threshold, x_start, x_end);
 

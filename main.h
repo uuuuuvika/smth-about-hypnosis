@@ -1,12 +1,12 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#include <MagickWand/MagickWand.h> //for Mac
-// #include <wand/MagickWand.h> //for Linux
+#define BASE_PATH "../optimized-gifs/"
+
+//#include <MagickWand/MagickWand.h> //for Mac
+#include <wand/MagickWand.h> //for Linux
 
 #include <led-matrix-c.h>
-// #include "led-matrix-c.h"
-
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
@@ -58,12 +58,13 @@ typedef struct
 } Text;
 
 int matrix_setup(MatrixContext *ctx);
+void show_loading_text(MatrixContext *mctx);
+
 void overdraw_half(struct LedCanvas *canvas, int width, int height, int left_half);
-int rand_range_int(int min_inclusive, int max_inclusive);
+int rand_range(int min, int max);
 
 int load_gif_frames(const char *filename, GifFrame **frames, int *frame_count);
 char *load_text_from_file(const char *filename);
-
 
 int display_gifs_setup(MatrixContext *mctx, GifContext *a, GifContext *b);
 void display_gifs_update(MatrixContext *mctx, GifContext *a, GifContext *b, int half_mode);
