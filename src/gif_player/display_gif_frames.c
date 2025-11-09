@@ -40,7 +40,7 @@ static int s_preloaded_ready = 0;
 static int preload_all_gifs() {
     if (s_preloaded_ready) return 1;
     s_preloaded_count = 0;
-    DIR *dir = opendir(BASE_PATH);
+    DIR *dir = opendir('../../assets/gifs/');
     if (!dir) {
         perror("opendir(BASE_PATH)");
         return 0;
