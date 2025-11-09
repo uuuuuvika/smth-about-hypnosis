@@ -1,5 +1,8 @@
 ## Usage
 
+0. matrix library must be clonned separately & placed to a common parrent derrictory
+https://github.com/hzeller/rpi-rgb-led-matrix
+
 1. connect to the pi
 
 ```bash
@@ -8,7 +11,7 @@ ssh pi@raspberrypi.local
 
 2. rsync or sync your local code with pi's
 
-### Build and Run
+3. build and Run
 
 ```bash
 make pro && sudo ./pro
