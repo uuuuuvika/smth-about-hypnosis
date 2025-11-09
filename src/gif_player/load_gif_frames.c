@@ -27,7 +27,7 @@ int load_gif_frames(const char *filename, GifFrame **frames, int *frame_count) {
     while (MagickNextImage(coalesced_wand) != MagickFalse) {
         GifFrame *current_frame = &(*frames)[i];
         
-        MagickResizeImage(coalesced_wand, 128, 32, LanczosFilter, 1.0);
+        MagickResizeImage(coalesced_wand, 128, 32, LanczosFilter);
         
         current_frame->width = MagickGetImageWidth(coalesced_wand);
         current_frame->height = MagickGetImageHeight(coalesced_wand);
