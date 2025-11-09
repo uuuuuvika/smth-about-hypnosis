@@ -1,10 +1,9 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#define BASE_PATH "../optimized-gifs/"
+#define BASE_PATH "./assets/gifs/"
 
 #include <MagickWand/MagickWand.h>
-//#include <wand/MagickWand.h> //for Linux
 
 #include <led-matrix-c.h>
 #include <stdio.h>
