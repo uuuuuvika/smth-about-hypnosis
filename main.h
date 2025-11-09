@@ -3,8 +3,8 @@
 
 #define BASE_PATH "../optimized-gifs/"
 
-//#include <MagickWand/MagickWand.h> //for Mac
-#include <wand/MagickWand.h> //for Linux
+#include <MagickWand/MagickWand.h>
+//#include <wand/MagickWand.h> //for Linux
 
 #include <led-matrix-c.h>
 #include <stdio.h>
