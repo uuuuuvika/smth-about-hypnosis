@@ -2,7 +2,12 @@
 
 0. matrix library must be clonned separately & placed to a common parrent derrictory
 https://github.com/hzeller/rpi-rgb-led-matrix
-
+```
+project/
+├── rpi-rgb-led-matrix/
+├── smth-about-hypnosis/
+    └── README.md
+```
 1. connect to the pi
 
 ```bash
