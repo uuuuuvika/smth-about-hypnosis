@@ -1,7 +1,7 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#define BASE_PATH "/assets/gifs/" 
+#define BASE_PATH "./assets/gifs/" 
 
 #include <MagickWand/MagickWand.h>
 
