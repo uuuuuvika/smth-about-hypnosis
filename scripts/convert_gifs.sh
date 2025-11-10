@@ -5,7 +5,7 @@
 # Using 128x32 resolution, 15fps, 3 seconds max
 
 
-INPUT_FOLDER="/Users/v.shcherbak/Desktop/py/smth-about-hypnosis/assets/gifs"
+INPUT_FOLDER="/Users/v.shcherbak/Desktop/py/smth-about-hypnosis/assets/raw_gifs"
 OUTPUT_FOLDER="/Users/v.shcherbak/Desktop/py/smth-about-hypnosis/assets/gifs"
 
 # Create directories if they don't exist
