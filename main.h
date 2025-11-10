@@ -1,7 +1,7 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#define BASE_PATH "assets/gifs/" 
+#define BASE_PATH "assets/gifs/"
 
 #include <MagickWand/MagickWand.h>
 
@@ -21,6 +21,13 @@ typedef struct
     int height;
     int delay;
 } GifFrame;
+
+typedef struct
+{
+    GifFrame *frames;
+    int frame_count;
+    char name[256];
+} PreloadedGif;
 
 typedef struct
 {
@@ -62,6 +69,8 @@ void show_loading_text(MatrixContext *mctx);
 void overdraw_half(struct LedCanvas *canvas, int width, int height, int left_half);
 int rand_range(int min, int max);
 
+int preload_all_gifs();
+int load_random_gif_for_layer(GifContext *layer);
 int load_gif_frames(const char *filename, GifFrame **frames, int *frame_count);
 char *load_text_from_file(const char *filename);
 
