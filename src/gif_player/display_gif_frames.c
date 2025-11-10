@@ -26,7 +26,7 @@ void draw_frame_to_canvas(MatrixContext *mctx, GifFrame *frame, int threshold, i
             int g = frame->pixel_data[idx + 1];
             int b = frame->pixel_data[idx + 2];
             led_canvas_set_pixel(mctx->offscreen_canvas, x, y, r, g, b);
-            sleep_ns(4000);
+            sleep(4000);
         }
     }
 }
