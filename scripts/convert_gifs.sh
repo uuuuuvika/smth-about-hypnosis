@@ -5,8 +5,8 @@
 # Using 128x32 resolution, 15fps, 3 seconds max
 
 
-INPUT_FOLDER="/Users/userfriendly/Dropbox/Proyectos/vika-bday-screen/gifs"
-OUTPUT_FOLDER="/Users/userfriendly/Dropbox/Proyectos/vika-bday-screen/optimized-gifs"
+INPUT_FOLDER="/Users/v.shcherbak/Desktop/py/smth-about-hypnosis/assets/gifs"
+OUTPUT_FOLDER="/Users/v.shcherbak/Desktop/py/smth-about-hypnosis/assets/gifs"
 
 # Create directories if they don't exist
 mkdir -p "$INPUT_FOLDER"
