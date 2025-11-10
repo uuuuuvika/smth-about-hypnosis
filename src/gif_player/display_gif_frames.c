@@ -39,7 +39,6 @@ void advance_layer(GifContext *layer)
             }
         }
     }
-    sleep(2000);
 }
 
 void display_gifs_update(MatrixContext *mctx, GifContext *a, GifContext *b, int half_mode)
