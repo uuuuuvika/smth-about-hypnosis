@@ -82,4 +82,6 @@ void free_gif_frames(GifContext *ctx);
 int text_setup(MatrixContext *mctx, Text *top, Text *bottom);
 void text_update(MatrixContext *mctx, Text *top, Text *bottom);
 
+void create_circles_gif(GifFrame **frames, int *frame_count);
+
 #endif
