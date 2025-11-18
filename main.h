@@ -69,6 +69,8 @@ void show_loading_text(MatrixContext *mctx);
 void overdraw_half(struct LedCanvas *canvas, int width, int height, int left_half);
 int rand_range(int min, int max);
 
+void create_circles_gif(GifFrame **frames, int *frame_count);
+
 int preload_all_gifs();
 int load_random_gif_for_layer(GifContext *layer);
 int load_gif_frames(const char *filename, GifFrame **frames, int *frame_count);
@@ -81,7 +83,5 @@ void free_gif_frames(GifContext *ctx);
 
 int text_setup(MatrixContext *mctx, Text *top, Text *bottom);
 void text_update(MatrixContext *mctx, Text *top, Text *bottom);
-
-void create_circles_gif(GifFrame **frames, int *frame_count);
 
 #endif
