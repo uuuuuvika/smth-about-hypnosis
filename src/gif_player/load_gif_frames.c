@@ -1,6 +1,7 @@
 #include "../../main.h"
 
 static PreloadedGif s_preloaded[512];
+
 static int s_preloaded_count = 0;
 static int s_preloaded_ready = 0;
 const int max_loops = 10;
@@ -32,6 +33,8 @@ int load_gif_frames(const char *filename, GifFrame **frames, int *frame_count) {
     int i = 0;
     while (MagickNextImage(coalesced_wand) != MagickFalse) {
         GifFrame *current_frame = &(*frames)[i];
+
+        MagickSetImageType(coalesced_wand, GrayscaleType);
         
         MagickResizeImage(coalesced_wand, 128, 32, LanczosFilter);
         
@@ -39,7 +42,7 @@ int load_gif_frames(const char *filename, GifFrame **frames, int *frame_count) {
         current_frame->height = MagickGetImageHeight(coalesced_wand);
         current_frame->delay = MagickGetImageDelay(coalesced_wand);
         if (current_frame->delay == 0) {
-            current_frame->delay = 10;
+            current_frame->delay = 60;
         }
         
         current_frame->pixel_data = malloc(current_frame->width * current_frame->height * 3);
