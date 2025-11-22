@@ -1,6 +1,6 @@
 #include "../main.h"
 
-void free_gif_frames(GifContext *ctx)
+void free_all_gif_frames(GifContext *ctx)
 {
     if (ctx == NULL || ctx->frames == NULL)
         return;
@@ -16,4 +16,12 @@ void free_gif_frames(GifContext *ctx)
     free(ctx->frames);
     ctx->frames = NULL;
     ctx->frame_count = 0;
+}
+
+void free_gif_frames(GifFrame *frames, int frame_count)
+{
+    for (int i = 0; i < frame_count; i++) {
+        free(frames[i].pixel_data);
+    }
+    free(frames);
 }

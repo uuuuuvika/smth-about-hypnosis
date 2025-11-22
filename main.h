@@ -79,7 +79,9 @@ char *load_text_from_file(const char *filename);
 int display_gifs_setup(MatrixContext *mctx, GifContext *a, GifContext *b);
 void display_gifs_update(MatrixContext *mctx, GifContext *a, GifContext *b, int half_mode);
 
-void free_gif_frames(GifContext *ctx);
+
+void free_all_gif_frames(GifContext *ctx);
+void free_gif_frames(GifFrame *frames, int frame_count);
 
 int text_setup(MatrixContext *mctx, Text *top, Text *bottom);
 void text_update(MatrixContext *mctx, Text *top, Text *bottom);

@@ -14,12 +14,12 @@
 #define M_PI 3.14159265358979323846
 #endif
 
-typedef struct {
-    int width;
-    int height;
-    int delay;
-    unsigned char *pixel_data;
-} GifFrame;
+// typedef struct {
+//     int width;
+//     int height;
+//     int delay;
+//     unsigned char *pixel_data;
+// } GifFrame;
 
 // Function pointer type for GIF creators
 typedef void (*GifCreator)(GifFrame **frames, int *frame_count);
@@ -224,15 +224,6 @@ void create_wave_gif(GifFrame **frames, int *frame_count)
     DestroyPixelWand(fg);
     DestroyPixelWand(bg);
     DestroyMagickWand(wand);
-}
-
-// ============ CLEANUP ============
-void free_gif_frames(GifFrame *frames, int frame_count)
-{
-    for (int i = 0; i < frame_count; i++) {
-        free(frames[i].pixel_data);
-    }
-    free(frames);
 }
 
 // ============ USAGE EXAMPLE ============
