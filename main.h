@@ -16,7 +16,7 @@
 #define BASE_PATH "assets/gifs/"
 #define MATRIX_WIDTH 128
 #define MATRIX_HEIGHT 32
-#define NUM_FRAMES 60
+#define NUM_FRAMES 30
 #define FRAME_DELAY 3
 #define M_PI 3.14159265358979323846
 #define MAX_LOOPS 10

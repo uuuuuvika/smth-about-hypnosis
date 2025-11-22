@@ -43,8 +43,10 @@ void draw_frame_to_canvas_scaled(MatrixContext *mctx, GifFrame *frame, int thres
             int sy = (dy * frame->height) / dest_height;
 
             // Clamp to valid range
-            if (sx >= frame->width) sx = frame->width - 1;
-            if (sy >= frame->height) sy = frame->height - 1;
+            if (sx >= frame->width)
+                sx = frame->width - 1;
+            if (sy >= frame->height)
+                sy = frame->height - 1;
 
             int idx = (sy * frame->width + sx) * 3;
             int r = frame->pixel_data[idx];
@@ -91,16 +93,12 @@ void display_gifs_update(MatrixContext *mctx, GifContext *a, GifContext *b, int 
 
     int mid = mctx->width / 2;
 
-    int x_start = 0;
-    int x_end = mctx->width;
-      if (half_mode == 0)
-    {
+    // int x_start = 0;
+    // int x_end = mctx->width;
+    if (half_mode == 0)
         draw_frame_to_canvas_scaled(mctx, fa, a->black_threshold, 0, mid);
-    }
     else if (half_mode == 1)
-    {
         draw_frame_to_canvas_scaled(mctx, fb, b->black_threshold, mid, mctx->width);
-    }
     else
     {
         draw_frame_to_canvas_scaled(mctx, fa, a->black_threshold, 0, mid);
