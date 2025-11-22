@@ -117,12 +117,7 @@ int preload_all_gifs()
     }
     closedir(dir);
     
-    create_circles_gif(&s_preloaded[s_preloaded_count].frames,
-                       &s_preloaded[s_preloaded_count].frame_count);
-    snprintf(s_preloaded[s_preloaded_count].name,
-             sizeof(s_preloaded[s_preloaded_count].name),
-             "circles.gif");
-    s_preloaded_count++;
+    printf("Preloaded %d GIFs\n", s_preloaded_count);
 
     if (s_preloaded_count == 0)
         return 0;
