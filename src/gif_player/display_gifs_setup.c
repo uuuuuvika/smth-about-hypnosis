@@ -38,13 +38,16 @@
 
 int display_gifs_setup(MatrixContext *mctx, GifContext *ga, GifContext *gb)
 {
-    // For ga - use wobbly circle
-    create_wobbly_circle_gif(&ga->frames, &ga->frame_count, MatrixContext *mctx);
+    if (mctx == NULL || mctx->matrix == NULL || mctx->offscreen_canvas == NULL)
+    {
+        printf("MatrixContext not initialized.\n");
+        return 0;
+    }
+    
+    create_wobbly_circle_gif(&ga->frames, &ga->frame_count, mctx);
     ga->current_frame = 0;
     
-
-    // For gb - use another animation (e.g., bouncing ball)
-    create_wobbly_circle_gif(&gb->frames, &gb->frame_count, MatrixContext *mctx);
+    create_wobbly_circle_gif(&gb->frames, &gb->frame_count, mctx);
     gb->current_frame = 0;
     
     return 1;

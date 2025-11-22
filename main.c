@@ -1,7 +1,5 @@
 #include "main.h"
 
-typedef void (*GifCreator)(GifFrame **frames, int *frame_count);
-
 GifCreator get_animation(const char *name)
 {
     for (int i = 0; animations[i].name != NULL; i++) {

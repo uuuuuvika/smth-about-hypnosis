@@ -1,6 +1,6 @@
 #include "../../../main.h"
 
-void create_bouncing_ball_gif(GifFrame **frames, int *frame_count)
+void create_bouncing_ball_gif(GifFrame **frames, int *frame_count, MatrixContext *mctx)
 {
     MagickWand *wand = NewMagickWand();
     PixelWand *bg = NewPixelWand(), *fg = NewPixelWand();
@@ -14,25 +14,25 @@ void create_bouncing_ball_gif(GifFrame **frames, int *frame_count)
 
     for (int f = 0; f < NUM_FRAMES; f++) {
         DrawingWand *draw = NewDrawingWand();
-        MagickNewImage(wand, MATRIX_WIDTH, MATRIX_HEIGHT, bg);
+        MagickNewImage(wand, mctx->width, mctx->height, bg);
         DrawSetFillColor(draw, fg);
 
         double t = (double)f / NUM_FRAMES;
         // Ball bounces using abs(sin) for smooth bounce
-        double x = 10 + t * (MATRIX_WIDTH - 20);
+        double x = 10 + t * (mctx->width - 20);
         double bounce = fabs(sin(t * M_PI * 4));
-        double y = MATRIX_HEIGHT - ball_radius - bounce * (MATRIX_HEIGHT - ball_radius * 2 - 2);
+        double y = mctx->height - ball_radius - bounce * (mctx->height - ball_radius * 2 - 2);
 
         DrawCircle(draw, x, y, x + ball_radius, y);
 
         MagickDrawImage(wand, draw);
         MagickSetImageType(wand, GrayscaleType);
 
-        (*frames)[f].width = MATRIX_WIDTH;
-        (*frames)[f].height = MATRIX_HEIGHT;
+        (*frames)[f].width = mctx->width;
+        (*frames)[f].height = mctx->height;
         (*frames)[f].delay = FRAME_DELAY;
-        (*frames)[f].pixel_data = malloc(MATRIX_WIDTH * MATRIX_HEIGHT);
-        MagickExportImagePixels(wand, 0, 0, MATRIX_WIDTH, MATRIX_HEIGHT,
+        (*frames)[f].pixel_data = malloc(mctx->width * mctx->height);
+        MagickExportImagePixels(wand, 0, 0, mctx->width, mctx->height,
                                 "I", CharPixel, (*frames)[f].pixel_data);
         DestroyDrawingWand(draw);
         MagickRemoveImage(wand);

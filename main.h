@@ -20,13 +20,8 @@
 #define FRAME_DELAY 3
 #define M_PI 3.14159265358979323846
 
-static PreloadedGif s_preloaded[512];
-
-static int s_preloaded_count = 0;
-static int s_preloaded_ready = 0;
-const int max_loops = 10;
-const int min_loops = 5;
-
+typedef void (*GifCreator)(GifFrame **frames, int *frame_count, MatrixContext *mctx);
+    
 typedef struct
 {
     unsigned char *pixel_data;
@@ -89,6 +84,12 @@ static GifAnimation animations[] = {
     {NULL, NULL}  // Terminator
 };
 
+static PreloadedGif s_preloaded[512];
+static int s_preloaded_count = 0;
+static int s_preloaded_ready = 0;
+const int max_loops = 10;
+const int min_loops = 5;
+
 int matrix_setup(MatrixContext *ctx);
 void show_loading_text(MatrixContext *mctx);
 
@@ -110,7 +111,7 @@ int text_setup(MatrixContext *mctx, Text *top, Text *bottom);
 void text_update(MatrixContext *mctx, Text *top, Text *bottom);
 
 void create_wobbly_circle_gif(GifFrame **frames, int *frame_coun, MatrixContext *mctx);
-void create_bouncing_ball_gif(GifFrame **frames, int *frame_count);
-void create_wave_gif(GifFrame **frames, int *frame_count);
+void create_bouncing_ball_gif(GifFrame **frames, int *frame_count, MatrixContext *mctx);
+void create_wave_gif(GifFrame **frames, int *frame_count, MatrixContext *mctx);
 
 #endif
