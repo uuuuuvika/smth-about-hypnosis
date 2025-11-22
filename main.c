@@ -27,29 +27,6 @@
 //     }
 // }
 
-// int main(int argc, char *argv[])
-// {
-//     MagickWandGenesis();
-    
-//     GifFrame *frames;
-//     int frame_count;
-    
-//     // Option 1: Call directly
-//     create_bouncing_ball_gif(&frames, &frame_count);
-    
-//     // Option 2: Use registry by name
-//     GifCreator creator = get_animation("wave");
-//     if (creator) {
-//         creator(&frames, &frame_count);
-//     }
-    
-//     // Use frames with your LED matrix...
-    
-//     free_gif_frames(frames, frame_count);
-//     MagickWandTerminus();
-//     return 0;
-// }
-
 int main(int argc, char **argv)
 {
     MatrixContext mctx = {0};

@@ -22,6 +22,40 @@ void draw_frame_to_canvas(MatrixContext *mctx, GifFrame *frame, int threshold, i
     }
 }
 
+void draw_frame_to_canvas_scaled(MatrixContext *mctx, GifFrame *frame, int threshold, int x_start, int x_end)
+{
+    if (x_start < 0)
+        x_start = 0;
+    if (x_end > mctx->width)
+        x_end = mctx->width;
+    if (x_start >= x_end)
+        return;
+
+    int dest_width = x_end - x_start;
+    int dest_height = mctx->height;
+
+    for (int dy = 0; dy < dest_height; ++dy)
+    {
+        for (int dx = 0; dx < dest_width; ++dx)
+        {
+            // Map destination pixel back to source pixel
+            int sx = (dx * frame->width) / dest_width;
+            int sy = (dy * frame->height) / dest_height;
+
+            // Clamp to valid range
+            if (sx >= frame->width) sx = frame->width - 1;
+            if (sy >= frame->height) sy = frame->height - 1;
+
+            int idx = (sy * frame->width + sx) * 3;
+            int r = frame->pixel_data[idx];
+            int g = frame->pixel_data[idx + 1];
+            int b = frame->pixel_data[idx + 2];
+
+            led_canvas_set_pixel(mctx->offscreen_canvas, x_start + dx, dy, r, g, b);
+        }
+    }
+}
+
 void advance_layer(GifContext *layer)
 {
     layer->current_frame++;
@@ -54,23 +88,24 @@ void display_gifs_update(MatrixContext *mctx, GifContext *a, GifContext *b, int 
 
     GifFrame *fa = &a->frames[a->current_frame];
     GifFrame *fb = &b->frames[b->current_frame];
+
     int mid = mctx->width / 2;
 
     int x_start = 0;
     int x_end = mctx->width;
-    if (half_mode == 0)
+      if (half_mode == 0)
     {
-        x_start = 0;
-        x_end = mid;
+        draw_frame_to_canvas_scaled(mctx, fa, a->black_threshold, 0, mid);
     }
     else if (half_mode == 1)
     {
-        x_start = mid;
-        x_end = mctx->width;
+        draw_frame_to_canvas_scaled(mctx, fb, b->black_threshold, mid, mctx->width);
     }
-
-    draw_frame_to_canvas(mctx, fa, a->black_threshold, x_start, x_end);
-    draw_frame_to_canvas(mctx, fb, b->black_threshold, x_start, x_end);
+    else
+    {
+        draw_frame_to_canvas_scaled(mctx, fa, a->black_threshold, 0, mid);
+        draw_frame_to_canvas_scaled(mctx, fb, b->black_threshold, mid, mctx->width);
+    }
 
     advance_layer(a);
     advance_layer(b);
