@@ -9,23 +9,23 @@ static int s_preloaded_ready = 0;
 const int max_loops = 10;
 const int min_loops = 5;
 
-GifCreator get_animation(const char *name)
-{
-    for (int i = 0; animations[i].name != NULL; i++) {
-        if (strcmp(animations[i].name, name) == 0) {
-            return animations[i].creator;
-        }
-    }
-    return NULL;
-}
+// GifCreator get_animation(const char *name)
+// {
+//     for (int i = 0; animations[i].name != NULL; i++) {
+//         if (strcmp(animations[i].name, name) == 0) {
+//             return animations[i].creator;
+//         }
+//     }
+//     return NULL;
+// }
 
-void list_animations(void)
-{
-    printf("Available animations:\n");
-    for (int i = 0; animations[i].name != NULL; i++) {
-        printf("  - %s\n", animations[i].name);
-    }
-}
+// void list_animations(void)
+// {
+//     printf("Available animations:\n");
+//     for (int i = 0; animations[i].name != NULL; i++) {
+//         printf("  - %s\n", animations[i].name);
+//     }
+// }
 
 // int main(int argc, char *argv[])
 // {
