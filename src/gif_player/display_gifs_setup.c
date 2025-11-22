@@ -46,5 +46,5 @@ int display_gifs_setup(MatrixContext *mctx, GifContext *ga, GifContext *gb)
     create_bouncing_ball_gif(&gb->frames, &gb->frame_count);
     gb->current_frame = 0;
     
-    return 1;  // success
+    return 1;
 }

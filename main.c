@@ -31,9 +31,9 @@ typedef struct {
 } GifAnimation;
 
 // Forward declarations
-void create_wobbly_circle_gif(GifFrame **frames, int *frame_count);
-void create_bouncing_ball_gif(GifFrame **frames, int *frame_count);
-void create_wave_gif(GifFrame **frames, int *frame_count);
+//void create_wobbly_circle_gif(GifFrame **frames, int *frame_count);
+//void create_bouncing_ball_gif(GifFrame **frames, int *frame_count);
+//void create_wave_gif(GifFrame **frames, int *frame_count);
 //void free_gif_frames(GifFrame *frames, int frame_count);
 
 // ============ ANIMATION REGISTRY ============
