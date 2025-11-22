@@ -69,18 +69,18 @@ typedef struct
     int letter_spacing;
 } Text;
 
-typedef struct {
-    const char *name;
-    GifCreator creator;
-} GifAnimation;
+// typedef struct {
+//     const char *name;
+//     GifCreator creator;
+// } GifAnimation;
 
-static GifAnimation animations[] = {
-    {"wobbly_circle", create_wobbly_circle_gif},
-    {"bouncing_ball", create_bouncing_ball_gif},
-    {"wave",          create_wave_gif},
-    // Add new entries: {"your_animation_name", create_your_animation_gif},
-    {NULL, NULL}  // Terminator
-};
+// static GifAnimation animations[] = {
+//     {"wobbly_circle", create_wobbly_circle_gif},
+//     {"bouncing_ball", create_bouncing_ball_gif},
+//     {"wave",          create_wave_gif},
+//     // Add new entries: {"your_animation_name", create_your_animation_gif},
+//     {NULL, NULL}  // Terminator
+// };
 
   
 

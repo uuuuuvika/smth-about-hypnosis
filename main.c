@@ -1,7 +1,7 @@
 #include "main.h"
 
 // Function pointer type for GIF creators
-typedef void (*GifCreator)(GifFrame **frames, int *frame_count);
+//typedef void (*GifCreator)(GifFrame **frames, int *frame_count);
 
 static PreloadedGif s_preloaded[512];
 static int s_preloaded_count = 0;
