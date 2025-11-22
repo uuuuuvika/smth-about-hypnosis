@@ -34,7 +34,7 @@ typedef struct {
 void create_wobbly_circle_gif(GifFrame **frames, int *frame_count);
 void create_bouncing_ball_gif(GifFrame **frames, int *frame_count);
 void create_wave_gif(GifFrame **frames, int *frame_count);
-void free_gif_frames(GifFrame *frames, int frame_count);
+//void free_gif_frames(GifFrame *frames, int frame_count);
 
 // ============ ANIMATION REGISTRY ============
 // Add your new animations here!
@@ -277,8 +277,8 @@ int main(int argc, char **argv)
     {
         printf("Failed to setup text rendering.\n");
         led_matrix_delete(mctx.matrix);
-        free_gif_frames(&ga);
-        free_gif_frames(&gb);
+        free_all_gif_frames(&ga);
+        free_all_gif_frames(&gb);
         return 1;
     }
 
@@ -320,8 +320,8 @@ int main(int argc, char **argv)
         }
     }
     led_matrix_delete(mctx.matrix);
-    free_gif_frames(&ga);
-    free_gif_frames(&gb);
+    free_all_gif_frames(&ga);
+    free_all_gif_frames(&gb);
     delete_font(text.font);
     free(text.text);
     free(bottom_text.text);
