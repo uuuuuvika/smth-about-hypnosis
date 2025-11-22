@@ -83,7 +83,6 @@ void free_gif_frames(GifFrame *frames, int frame_count);
 int text_setup(MatrixContext *mctx, Text *top, Text *bottom);
 void text_update(MatrixContext *mctx, Text *top, Text *bottom);
 
-void create_circles_gif(GifFrame **frames, int *frame_count);
 void create_wobbly_circle_gif(GifFrame **frames, int *frame_count);
 void create_bouncing_ball_gif(GifFrame **frames, int *frame_count);
 void create_wave_gif(GifFrame **frames, int *frame_count);
