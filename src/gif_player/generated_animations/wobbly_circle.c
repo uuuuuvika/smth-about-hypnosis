@@ -53,7 +53,7 @@ void create_wobbly_circle_gif(GifFrame **frames, int *frame_count, MatrixContext
         DrawSetStrokeColor(draw, fg);
 
         double time = (double)f / NUM_FRAMES * M_PI * 2.0;
-        draw_wobbly_circle(draw, time, 2.0);
+        draw_wobbly_circle(draw, time, 2.0, mctx);
 
         MagickDrawImage(wand, draw);
         MagickSetImageType(wand, GrayscaleType);
