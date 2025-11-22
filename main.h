@@ -17,7 +17,7 @@
 #define MATRIX_WIDTH 128
 #define MATRIX_HEIGHT 32
 #define NUM_FRAMES 30
-#define FRAME_DELAY 3
+#define FRAME_DELAY 15
 #define M_PI 3.14159265358979323846
 #define MAX_LOOPS 10
 #define MIN_LOOPS 5
@@ -51,8 +51,8 @@ typedef struct
     int frame_count;
     int current_frame;
     int black_threshold;
-    const char **playlist;
-    int playlist_count;
+    //const char **playlist;
+    //int playlist_count;
     const char *current_path;
     int loops_remaining;
 } GifContext;
