@@ -1,5 +1,14 @@
 #include "main.h"
 
+// Function pointer type for GIF creators
+typedef void (*GifCreator)(GifFrame **frames, int *frame_count);
+
+static PreloadedGif s_preloaded[512];
+static int s_preloaded_count = 0;
+static int s_preloaded_ready = 0;
+const int max_loops = 10;
+const int min_loops = 5;
+
 GifCreator get_animation(const char *name)
 {
     for (int i = 0; animations[i].name != NULL; i++) {
