@@ -19,6 +19,8 @@
 #define NUM_FRAMES 60
 #define FRAME_DELAY 3
 #define M_PI 3.14159265358979323846
+#define MAX_LOOPS 10
+#define MIN_LOOPS 5
   
 typedef struct
 {
