@@ -39,12 +39,12 @@
 int display_gifs_setup(MatrixContext *mctx, GifContext *ga, GifContext *gb)
 {
     // For ga - use wobbly circle
-    create_wobbly_circle_gif(&ga->frames, &ga->frame_count);
+    create_wobbly_circle_gif(&ga->frames, &ga->frame_count, MatrixContext *mctx);
     ga->current_frame = 0;
     
 
     // For gb - use another animation (e.g., bouncing ball)
-    create_wobbly_circle_gif(&gb->frames, &gb->frame_count);
+    create_wobbly_circle_gif(&gb->frames, &gb->frame_count, MatrixContext *mctx);
     gb->current_frame = 0;
     
     return 1;

@@ -1,8 +1,6 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#define BASE_PATH "assets/gifs/"
-
 #include <MagickWand/MagickWand.h>
 
 #include <led-matrix-c.h>
@@ -13,6 +11,21 @@
 #include <time.h>
 #include <dirent.h>
 #include <strings.h>
+#include <math.h>
+
+#define BASE_PATH "assets/gifs/"
+#define MATRIX_WIDTH 128
+#define MATRIX_HEIGHT 32
+#define NUM_FRAMES 60
+#define FRAME_DELAY 3
+#define M_PI 3.14159265358979323846
+
+static PreloadedGif s_preloaded[512];
+
+static int s_preloaded_count = 0;
+static int s_preloaded_ready = 0;
+const int max_loops = 10;
+const int min_loops = 5;
 
 typedef struct
 {
@@ -63,6 +76,19 @@ typedef struct
     int letter_spacing;
 } Text;
 
+typedef struct {
+    const char *name;
+    GifCreator creator;
+} GifAnimation;
+
+static GifAnimation animations[] = {
+    {"wobbly_circle", create_wobbly_circle_gif},
+    {"bouncing_ball", create_bouncing_ball_gif},
+    {"wave",          create_wave_gif},
+    // Add new entries: {"your_animation_name", create_your_animation_gif},
+    {NULL, NULL}  // Terminator
+};
+
 int matrix_setup(MatrixContext *ctx);
 void show_loading_text(MatrixContext *mctx);
 
@@ -83,7 +109,7 @@ void free_gif_frames(GifFrame *frames, int frame_count);
 int text_setup(MatrixContext *mctx, Text *top, Text *bottom);
 void text_update(MatrixContext *mctx, Text *top, Text *bottom);
 
-void create_wobbly_circle_gif(GifFrame **frames, int *frame_count);
+void create_wobbly_circle_gif(GifFrame **frames, int *frame_coun, MatrixContext *mctx);
 void create_bouncing_ball_gif(GifFrame **frames, int *frame_count);
 void create_wave_gif(GifFrame **frames, int *frame_count);
 
