@@ -38,11 +38,9 @@ void draw_frame_to_canvas_scaled(MatrixContext *mctx, GifFrame *frame, int thres
     {
         for (int dx = 0; dx < dest_width; ++dx)
         {
-            // Map destination pixel back to source pixel
             int sx = (dx * frame->width) / dest_width;
             int sy = (dy * frame->height) / dest_height;
 
-            // Clamp to valid range
             if (sx >= frame->width)
                 sx = frame->width - 1;
             if (sy >= frame->height)
@@ -70,7 +68,6 @@ void advance_layer(GifContext *layer)
         {
             if (!load_random_gif_for_layer(layer))
             {
-                // best-effort fallback: keep current and reset loops
                 layer->loops_remaining = rand_range(10, 20);
             }
         }
@@ -107,4 +104,20 @@ void display_gifs_update(MatrixContext *mctx, GifContext *a, GifContext *b, int 
 
     advance_layer(a);
     advance_layer(b);
+}
+
+void display_gif_on_half(MatrixContext *mctx, GifContext *gif, int x_start, int y_start, int width)
+{
+    if (mctx == NULL || gif == NULL)
+        return;
+    if (mctx->matrix == NULL || mctx->offscreen_canvas == NULL)
+        return;
+    if (gif->frames == NULL || gif->frame_count == 0)
+        return;
+
+    GifFrame *frame = &gif->frames[gif->current_frame];
+    
+    int x_end = x_start + width;
+    draw_frame_to_canvas_scaled(mctx, frame, gif->black_threshold, x_start, x_end);
+    advance_layer(gif);
 }

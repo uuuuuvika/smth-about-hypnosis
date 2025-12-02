@@ -1,32 +1,5 @@
 #include "main.h"
 
-// Function pointer type for GIF creators
-//typedef void (*GifCreator)(GifFrame **frames, int *frame_count);
-
-// static PreloadedGif s_preloaded[512];
-// static int s_preloaded_count = 0;
-// static int s_preloaded_ready = 0;
-// const int max_loops = 10;
-// const int min_loops = 5;
-
-// GifCreator get_animation(const char *name)
-// {
-//     for (int i = 0; animations[i].name != NULL; i++) {
-//         if (strcmp(animations[i].name, name) == 0) {
-//             return animations[i].creator;
-//         }
-//     }
-//     return NULL;
-// }
-
-// void list_animations(void)
-// {
-//     printf("Available animations:\n");
-//     for (int i = 0; animations[i].name != NULL; i++) {
-//         printf("  - %s\n", animations[i].name);
-//     }
-// }
-
 int main(int argc, char **argv)
 {
     MatrixContext mctx = {0};
@@ -34,9 +7,6 @@ int main(int argc, char **argv)
     GifContext gb = {0};
     Text text = {0};
     Text bottom_text = {0};
-    // Text *multi_text[] = {
-    //     &text,
-    //     &bottom_text};
 
     if (!matrix_setup(&mctx))
     {
@@ -64,24 +34,29 @@ int main(int argc, char **argv)
     int frames_in_mode = 0;
     int mode_frames = rand_range(mode_min_frames, mode_max_frames);
 
+    int half_width = mctx.width / 2;
+
     while (1)
     {
         led_canvas_fill(mctx.offscreen_canvas, 0, 0, 0);
 
         switch (mode)
         {
-        case 0: // Left GIF only, Right Text only
+        case 0: // Left GIF, Right Text
             text_update(&mctx, &text, &bottom_text);
             overdraw_half(mctx.offscreen_canvas, mctx.width, mctx.height, 1);
-            display_gifs_update(&mctx, &ga, &gb, 0);
+            display_gif_on_half(&mctx, &ga, 0, 0, half_width);
             break;
-        case 1: // Left Text only, Right GIF only
+            
+        case 1: // Left Text, Right GIF
             text_update(&mctx, &text, &bottom_text);
             overdraw_half(mctx.offscreen_canvas, mctx.width, mctx.height, 0);
-            display_gifs_update(&mctx, &ga, &gb, 1);
+            display_gif_on_half(&mctx, &gb, half_width, 0, mctx.width - half_width);
             break;
-        case 2: // GIF on both sides, no Text
-            display_gifs_update(&mctx, &ga, &gb, -1);
+            
+        case 2: // GIF on both sides
+            display_gif_on_half(&mctx, &ga, 0, 0, half_width);
+            display_gif_on_half(&mctx, &gb, half_width, 0, mctx.width - half_width);
             break;
         }
 
@@ -95,6 +70,7 @@ int main(int argc, char **argv)
             mode_frames = rand_range(mode_min_frames, mode_max_frames);
         }
     }
+    
     led_matrix_delete(mctx.matrix);
     free_all_gif_frames(&ga);
     free_all_gif_frames(&gb);

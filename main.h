@@ -100,11 +100,15 @@ char *load_text_from_file(const char *filename);
 int display_gifs_setup(MatrixContext *mctx, GifContext *a, GifContext *b);
 void display_gifs_update(MatrixContext *mctx, GifContext *a, GifContext *b, int half_mode);
 
+void display_gif_on_half(MatrixContext *mctx, GifContext *gif, int x_start, int y_start, int width);
+
 void free_all_gif_frames(GifContext *ctx);
 void free_gif_frames(GifFrame *frames, int frame_count);
 
 int text_setup(MatrixContext *mctx, Text *top, Text *bottom);
 void text_update(MatrixContext *mctx, Text *top, Text *bottom);
+void text_update_on_half(MatrixContext *mctx, Text *top, Text *bottom, int x_start, int y_start, int width);
+int draw_text_clipped(struct LedCanvas *canvas, struct LedFont *font, int x, int y, uint8_t r, uint8_t g, uint8_t b,const char *text, int letter_spacing,int clip_x_start, int clip_x_end);
 
 void create_wobbly_circle_gif(GifFrame **frames, int *frame_coun, MatrixContext *mctx);
 void create_bouncing_ball_gif(GifFrame **frames, int *frame_count, MatrixContext *mctx);
