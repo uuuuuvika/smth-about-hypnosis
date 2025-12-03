@@ -44,19 +44,20 @@ int main(int argc, char **argv)
         {
         case 0: // Left GIF, Right Text
             text_update(&mctx, &text, &bottom_text);
-            overdraw_half(mctx.offscreen_canvas, mctx.width, mctx.height, 1);
+            //overdraw_half(mctx.offscreen_canvas, mctx.width, mctx.height, 1);
             display_gif_on_half(&mctx, &ga, 0, 0, half_width);
             break;
             
         case 1: // Left Text, Right GIF
-            text_update(&mctx, &text, &bottom_text);
-            overdraw_half(mctx.offscreen_canvas, mctx.width, mctx.height, 0);
             display_gif_on_half(&mctx, &gb, half_width, 0, mctx.width - half_width);
+            text_update(&mctx, &text, &bottom_text);
+            //overdraw_half(mctx.offscreen_canvas, mctx.width, mctx.height, 0);
             break;
             
         case 2: // GIF on both sides
             display_gif_on_half(&mctx, &ga, 0, 0, half_width);
             display_gif_on_half(&mctx, &gb, half_width, 0, mctx.width - half_width);
+            usleep(25000);
             break;
         }
 

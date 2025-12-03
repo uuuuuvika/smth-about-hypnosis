@@ -19,6 +19,7 @@ int text_setup(MatrixContext *mctx, Text *top, Text *bottom)
     int font_width = character_width_font(font, 'W');
     int font_baseline = baseline_font(font);
     char *text_content = load_text_from_file("src/text_scroller/ascii.txt");
+    
     if (text_content == NULL)
     {
         printf("Failed to load text from file.\n");
@@ -42,14 +43,14 @@ int text_setup(MatrixContext *mctx, Text *top, Text *bottom)
     bottom->font = font;
     bottom->font_width = font_width;
     bottom->font_baseline = font_baseline;
-    bottom->color = color_bottom;
-    bottom->x_orig = (mctx->height) + 5;
-    bottom->y_orig = font_baseline + 6;
-    bottom->x = bottom->x_orig;
-    bottom->y = bottom->y_orig;
-    bottom->letter_spacing = 1;
+    bottom->x = 10;
+    bottom->x_orig = 10; 
+    bottom->y = mctx->height; 
+    bottom->y_orig = mctx->height;
     bottom->text = text_content;
-    bottom->is_vertical = 1;
+    bottom->color = color_bottom;
+    bottom->letter_spacing = 0;
+    bottom->is_vertical = 1; 
 
     return 1;
 }
