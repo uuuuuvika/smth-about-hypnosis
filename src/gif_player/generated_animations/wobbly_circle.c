@@ -4,7 +4,8 @@
 static void draw_wobbly_circle(DrawingWand *draw, double time, double thickness, MatrixContext *mctx)
 {
     const int segments = 64;
-    const double base_radius = (mctx->height / 2.0) * 0.9;
+    const double base_radius = (mctx->height / 2.0) * 0.7;
+
     const double cx = mctx->width / 2.0;
     const double cy = mctx->height / 2.0;
 
@@ -18,6 +19,7 @@ static void draw_wobbly_circle(DrawingWand *draw, double time, double thickness,
                         sin(angle * 2.0 + time * 3.0) * 1.5;
         double r = base_radius + wobble;
         double c = cos(angle), s = sin(angle);
+        
         inner[i].x = cx + c * (r - thickness / 2.0);
         inner[i].y = cy + s * (r - thickness / 2.0);
         outer[i].x = cx + c * (r + thickness / 2.0);

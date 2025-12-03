@@ -90,8 +90,6 @@ void display_gifs_update(MatrixContext *mctx, GifContext *a, GifContext *b, int 
 
     int mid = mctx->width / 2;
 
-    // int x_start = 0;
-    // int x_end = mctx->width;
     if (half_mode == 0)
         draw_frame_to_canvas_scaled(mctx, fa, a->black_threshold, 0, mid);
     else if (half_mode == 1)
