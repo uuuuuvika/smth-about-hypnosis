@@ -32,25 +32,25 @@ int text_setup(MatrixContext *mctx, Text *top, Text *bottom)
     top->font_width = font_width;
     top->font_baseline = font_baseline;
     top->color = color_top;
-    top->x_orig = (mctx->height) + 5;
+    top->x_orig = mctx->width + 5;
     top->y_orig = font_baseline;
     top->x = top->x_orig;
     top->y = top->y_orig;
-    top->letter_spacing = 1;
     top->text = text_content;
-    top->is_vertical = 1;
+    top->letter_spacing = 0;
+    top->is_vertical = 0;
 
     bottom->font = font;
     bottom->font_width = font_width;
     bottom->font_baseline = font_baseline;
-    bottom->x = 10;
-    bottom->x_orig = 10; 
-    bottom->y = mctx->height; 
-    bottom->y_orig = mctx->height;
-    bottom->text = text_content;
     bottom->color = color_bottom;
+    bottom->x_orig = mctx->width + 6; 
+    bottom->y_orig = font_baseline + 3;
+    bottom->x = bottom->x_orig;
+    bottom->y = bottom->y_orig;
+    bottom->text = text_content;
     bottom->letter_spacing = 0;
-    bottom->is_vertical = 1; 
+    bottom->is_vertical = 0; 
 
     return 1;
 }

@@ -12,6 +12,7 @@
 #include <dirent.h>
 #include <strings.h>
 #include <math.h>
+#include <signal.h>
 
 #define BASE_PATH "assets/gifs/"
 #define MATRIX_WIDTH 128
@@ -21,6 +22,11 @@
 #define M_PI 3.14159265358979323846
 #define MAX_LOOPS 10
 #define MIN_LOOPS 5
+
+typedef struct {
+    double time;
+    int num_particles;
+} ParticleAnimation;
 
 typedef struct
 {
@@ -96,7 +102,8 @@ void text_update_on_half(MatrixContext *mctx, Text *top, Text *bottom, int x_sta
 int draw_text_clipped(struct LedCanvas *canvas, struct LedFont *font, int x, int y, uint8_t r, uint8_t g, uint8_t b, const char *text, int letter_spacing, int clip_x_start, int clip_x_end);
 
 void create_wobbly_circle_gif(GifFrame **frames, int *frame_coun, MatrixContext *mctx);
-void create_bouncing_ball_gif(GifFrame **frames, int *frame_count, MatrixContext *mctx);
-void create_wave_gif(GifFrame **frames, int *frame_count, MatrixContext *mctx);
+void particle_animation_init(ParticleAnimation *anim);
+// void particle_animation_draw(ParticleAnimation *anim, MatrixContext *mctx);
+void particle_animation_draw(ParticleAnimation *anim, MatrixContext *mctx, int x_offset, int width);
 
 #endif

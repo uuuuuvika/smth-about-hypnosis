@@ -38,17 +38,19 @@
 
 int display_gifs_setup(MatrixContext *mctx, GifContext *ga, GifContext *gb)
 {
+    (void)gb;
+
     if (mctx == NULL || mctx->matrix == NULL || mctx->offscreen_canvas == NULL)
     {
         printf("MatrixContext not initialized.\n");
         return 0;
     }
-    
+
     create_wobbly_circle_gif(&ga->frames, &ga->frame_count, mctx);
     ga->current_frame = 0;
     
-    create_wobbly_circle_gif(&gb->frames, &gb->frame_count, mctx);
-    gb->current_frame = 0;
+    // create_wobbly_circle_gif(&gb->frames, &gb->frame_count, mctx);
+    // gb->current_frame = 0;
     
     return 1;
 }
