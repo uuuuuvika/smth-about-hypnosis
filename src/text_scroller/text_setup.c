@@ -19,12 +19,12 @@ int text_setup(MatrixContext *mctx, Text *top, Text *bottom)
     int font_width = character_width_font(font, 'W');
     int font_baseline = baseline_font(font);
     char *text_content = load_text_from_file("src/text_scroller/ascii.txt");
+    //char *text_content = "dldksldksldksldksldksldkslkdslkdlskdslkdl dsskdjskldjskhfjskhfskhf sfjskfhskhfskf";
     
     if (text_content == NULL)
     {
         printf("Failed to load text from file.\n");
         delete_font(font);
-        free(text_content);
         return 0;
     }
 

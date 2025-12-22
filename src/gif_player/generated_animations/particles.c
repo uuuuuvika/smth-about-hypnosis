@@ -12,10 +12,10 @@ void particle_animation_draw(ParticleAnimation *anim, MatrixContext *mctx, int x
     const double centerY = mctx->height / 2.0;
     const double baseRadius = (mctx->height < width ? mctx->height : width) * 0.25;
     
-    const double xAmplitude = 2.4;
+    const double xAmplitude = 3.4;
     const double yAmplitude = 1.2;
     const double xFreq = 0.015;
-    const double yFreq = 0.090;
+    const double yFreq = 0.120;
     const double xSpeed = 0.3;
     const double ySpeed = 0.3;
 
@@ -37,8 +37,9 @@ void particle_animation_draw(ParticleAnimation *anim, MatrixContext *mctx, int x
     }
     }
     
-    anim->time += 0.03;
+    anim->time += 0.3;
 }
+
 //900 - crazy stuff
 // void particle_animation_draw(ParticleAnimation *anim, MatrixContext *mctx, int x_offset, int width)
 // {
@@ -81,8 +82,8 @@ void particle_animation_draw(ParticleAnimation *anim, MatrixContext *mctx, int x
 //     const double centerY = mctx->height / 2.0;
 //     const double baseRadius = (mctx->height < width ? mctx->height : width) * 0.25;
     
-//     const double xAmplitude = 2.0;
-//     const double yAmplitude = 1.0;
+//     const double xAmplitude = 3.0;
+//     const double yAmplitude = 1.2;
 //     const double xFreq = 0.02;
 //     const double yFreq = 0.04;
 //     const double xSpeed = 0.2;
@@ -94,21 +95,27 @@ void particle_animation_draw(ParticleAnimation *anim, MatrixContext *mctx, int x
 //         double y = centerY - baseRadius * yAmplitude * 
 //                    cos((anim->time + f * yFreq) * ySpeed);
         
-//         if (x >= 0 && x < mctx->width && y >= 0 && y < mctx->height) {
-//             led_canvas_set_pixel(mctx->offscreen_canvas, (int)x, (int)y, 255, 255, 255);
+//        double fade = (double)f / anim->num_particles;
+
+//         uint8_t brightness = 255 * (1.0 - fade);
+//         uint8_t red = brightness;
+//         uint8_t green = brightness;
+//         uint8_t blue = brightness;
+    
+//         if (x >= x_offset && x < x_offset + width && y >= 0 && y < mctx->height) {
+//             led_canvas_set_pixel(mctx->offscreen_canvas, (int)x, (int)y, red, green, blue);
 //         }
 //     }
-    
-//     anim->time += 0.02;
+//     anim->time += 0.03;
 // }
 
-
-//with 800 particles - circle
+//with 800 particles - circles
 // void particle_animation_draw(ParticleAnimation *anim, MatrixContext *mctx, int x_offset, int width)
 // {
 //     const double centerX = x_offset + width / 2.0;
 //     const double centerY = mctx->height / 2.0;
 //     const double baseRadius = (mctx->height < width ? mctx->height : width) * 0.25;
+//     //const double innerRadius = (mctx->height < width ? mctx->height : width) * 0.15;
     
 //     const double xAmplitude = 1.6;
 //     const double yAmplitude = 1.2;
@@ -122,11 +129,26 @@ void particle_animation_draw(ParticleAnimation *anim, MatrixContext *mctx, int x
 //                    sin((anim->time + f * xFreq) * xSpeed);
 //         double y = centerY - baseRadius * yAmplitude * 
 //                    cos((anim->time + f * yFreq) * ySpeed);
+
+//         // double x_inner = centerX - innerRadius * xAmplitude * 
+//         //            sin((anim->time + f * yFreq) * ySpeed);
+//         // double y_inner = centerY - innerRadius * yAmplitude * 
+//         //            cos((anim->time + f * xFreq) * xSpeed);
         
-//         if (x >= 0 && x < mctx->width && y >= 0 && y < mctx->height) {
-//             led_canvas_set_pixel(mctx->offscreen_canvas, (int)x, (int)y, 255, 255, 255);
-//         }
-//     }
+//         double fade = (double)f / anim->num_particles;
+
+//         uint8_t brightness = 255 * (1.0 - fade);
+//         uint8_t red = brightness;
+//         uint8_t green = brightness;
+//         uint8_t blue = brightness;
     
+//         if (x >= x_offset && x < x_offset + width && y >= 0 && y < mctx->height) {
+//             led_canvas_set_pixel(mctx->offscreen_canvas, (int)x, (int)y, red, green, blue);
+//         }
+
+//         // if (x_inner >= x_offset && x_inner < x_offset + width && y_inner >= 0 && y_inner < mctx->height) {
+//         //     led_canvas_set_pixel(mctx->offscreen_canvas, (int)x_inner, (int)y_inner, red, green, blue);
+//         // }
+//     } 
 //     anim->time += 0.03;
 // }
