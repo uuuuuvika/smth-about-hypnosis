@@ -70,7 +70,7 @@ int main(int argc, char **argv)
         case 2: // GIF on both sides
             particle_animation_draw(&particle_anim, &mctx, 0, half_width);
             particle_animation_draw(&particle_anim, &mctx, half_width, half_width);
-            //usleep(25000);
+            usleep(25000);
             break;
         }
 
