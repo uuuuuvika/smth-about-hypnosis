@@ -1,4 +1,4 @@
-#include "../../../main.h"
+#include "../../main.h"
 
 void particle_animation_init(ParticleAnimation *anim)
 {

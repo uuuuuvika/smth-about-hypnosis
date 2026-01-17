@@ -19,6 +19,6 @@ void text_update(MatrixContext *mctx, Text *top, Text *bottom)
     if (mctx == NULL || mctx->offscreen_canvas == NULL || top == NULL || bottom == NULL)
         return;
 
-        text_update_horizontal(mctx, top);
-        text_update_horizontal(mctx, bottom);
+    text_update_horizontal(mctx, top);
+    text_update_horizontal(mctx, bottom);
 }
