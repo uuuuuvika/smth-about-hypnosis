@@ -12,8 +12,6 @@ int main(int argc, char **argv)
 {
     MatrixContext mctx = {0};
     ParticleAnimation particle_anim = {0};
-    // GifContext ga = {0};
-    // GifContext gb = {0};
     Text text = {0};
     Text bottom_text = {0};
 
@@ -25,18 +23,10 @@ int main(int argc, char **argv)
         printf("Failed to setup matrix.\n");
         return 1;
     }
-    // if (!display_gifs_setup(&mctx, &ga, &gb))
-    // {
-    //     printf("Failed to setup dual GIF rendering.\n");
-    //     led_matrix_delete(mctx.matrix);
-    //     return 1;
-    // }
     if (!text_setup(&mctx, &text, &bottom_text))
     {
         printf("Failed to setup text rendering.\n");
         led_matrix_delete(mctx.matrix);
-        // free_all_gif_frames(&ga);
-        // free_all_gif_frames(&gb);
         return 1;
     }
 
@@ -53,6 +43,7 @@ int main(int argc, char **argv)
     while (running)
     {
         led_canvas_fill(mctx.offscreen_canvas, 0, 0, 0);
+
         switch (mode)
         {
         case 0: // Left GIF, Right Text
@@ -89,10 +80,7 @@ int main(int argc, char **argv)
 
     led_matrix_delete(mctx.matrix);
     delete_font(text.font);
-    //free_all_gif_frames(&ga);
-    //free_all_gif_frames(&gb);
     free(text.text);
-   // free(bottom_text.text);
 
     return 0;
 }

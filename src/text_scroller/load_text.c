@@ -28,5 +28,6 @@ char *load_text_from_file(const char *filename)
     replace_newlines_with_spaces(buffer);
 
     printf("Loaded %zu bytes of UTF-8 text\n", read_size);
+    
     return buffer;
 }
