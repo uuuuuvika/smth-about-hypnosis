@@ -27,6 +27,13 @@ typedef struct {
     int num_particles;
 } ParticleAnimation;
 
+typedef struct {
+    char **lines;
+    size_t count;
+    char *buffer;
+} TextLines;
+
+
 typedef struct
 {
     struct LedFont *font;
@@ -59,5 +66,7 @@ void text_update(MatrixContext *mctx, Text *top, Text *bottom);
 
 void particle_animation_init(ParticleAnimation *anim);
 void particle_animation_draw(ParticleAnimation *anim, MatrixContext *mctx, int x_offset, int width);
+
+void free_text_lines(TextLines *text_lines);
 
 #endif

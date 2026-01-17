@@ -42,3 +42,14 @@ int rand_range(int min_inclusive, int max_inclusive)
     int span = max_inclusive - min_inclusive + 1;
     return min_inclusive + (rand() % span);
 }
+
+void free_text_lines(TextLines *text_lines)
+{
+    if (text_lines)
+    {
+        free(text_lines->buffer);
+        free(text_lines->lines);
+        free(text_lines);
+    }
+}
+
