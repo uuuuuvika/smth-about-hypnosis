@@ -47,6 +47,7 @@ TextLines *load_text_lines_from_file(const char *filename)
     fseek(file, 0, SEEK_SET);
 
     char *buffer = malloc(length + 1);
+
     if (!buffer)
     {
         fclose(file);
