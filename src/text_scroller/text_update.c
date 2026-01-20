@@ -38,5 +38,5 @@ void text_update(MatrixContext *mctx, Text *top, Text *bottom, int should_move)
     if (mctx == NULL || mctx->offscreen_canvas == NULL || top == NULL || bottom == NULL)
         return;
     text_update_vertical(mctx, top, 0, should_move);
-    text_update_vertical(mctx, bottom, 1, should_move);
+    // text_update_vertical(mctx, bottom, 1, should_move);
 }
