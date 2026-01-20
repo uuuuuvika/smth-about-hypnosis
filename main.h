@@ -53,13 +53,13 @@ typedef struct
 {
     struct LedFont *font;
     int font_width;
+    int font_height;
     int font_baseline;
     struct Color color;
-    char *text;
-    int x_orig;
+    TextLines *lines;
     int y_orig;
-    int x;
     int y;
+    int total_height;
     int letter_spacing;
 } Text;
 

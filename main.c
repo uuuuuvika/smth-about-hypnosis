@@ -138,7 +138,7 @@ int main(int argc, char **argv)
     video_player_cleanup(&video);
     led_matrix_delete(mctx.matrix);
     delete_font(text.font);
-    free(text.text);
+    free_text_lines(text.lines);
 
     return 0;
 }
