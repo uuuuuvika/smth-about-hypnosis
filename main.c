@@ -58,7 +58,7 @@ int main(int argc, char **argv)
 
     // Initialize video player (optional - won't fail if file doesn't exist)
     // Video is 15fps
-    if (video_player_init(&video, "../assets/output_videos/cows.rgb", 15))
+    if (video_player_init(&video, "assets/output_videos/cows.rgb", 15))
     {
         video_enabled = 1;
         printf("Video playback enabled.\n");
