@@ -11,7 +11,7 @@ OUTPUT_FOLDER="../assets/output_videos"
 # Video settings
 WIDTH=64
 HEIGHT=32
-FPS=15
+FPS=30
 
 # Create directories if they don't exist
 mkdir -p "$INPUT_FOLDER"

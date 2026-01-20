@@ -58,7 +58,7 @@ int main(int argc, char **argv)
 
     // Initialize video player (optional - won't fail if file doesn't exist)
     // Video is 15fps
-    if (video_player_init(&video, "assets/output_videos/cows.rgb", 15))
+    if (video_player_init(&video, "assets/output_videos/cows.rgb", 30))
     {
         video_enabled = 1;
         printf("Video playback enabled.\n");
@@ -70,7 +70,7 @@ int main(int argc, char **argv)
 
     init_frame_controller(&fc, 60, 20, 60);
 
-    int mode = 0;
+    int mode = 3;
     int frames_in_mode = 0;
     int mode_min_frames = 180;
     int mode_max_frames = 1600;
@@ -120,12 +120,12 @@ int main(int argc, char **argv)
         usleep(fc.frame_delay_us);
 
         frames_in_mode++;
-        if (frames_in_mode >= mode_frames)
-        {
-            mode = (mode + 1) % (video_enabled ? 4 : 3);
-            frames_in_mode = 0;
-            mode_frames = rand_range(mode_min_frames, mode_max_frames);
-        }
+        // if (frames_in_mode >= mode_frames)
+        // {
+        //     mode = (mode + 1) % (video_enabled ? 4 : 3);
+        //     frames_in_mode = 0;
+        //     mode_frames = rand_range(mode_min_frames, mode_max_frames);
+        // }
     }
 
     printf("\x1b[36m\nShutting down gracefully.\n\x1b[0m");
