@@ -92,8 +92,8 @@ int main(int argc, char **argv)
             break;
 
         case 1:
-            text_update(&mctx, &text, &bottom_text, 
-                fc.text_frame_counter % fc.text_frame_skip == 0);
+            text_update(&mctx, &text, &bottom_text,
+                        fc.text_frame_counter % fc.text_frame_skip == 0);
             overdraw_half(mctx.offscreen_canvas, mctx.width, mctx.height, 1);
             particle_animation_draw(&particle_anim, &mctx, 0, half_width);
             break;
@@ -107,8 +107,12 @@ int main(int argc, char **argv)
             // Video on left half, particles on right half
             if (video_enabled)
             {
+                text_update(&mctx, &text, &bottom_text,
+                            fc.text_frame_counter % fc.text_frame_skip == 0);
+                overdraw_half(mctx.offscreen_canvas, mctx.width, mctx.height, 1);
                 video_player_draw(&video, &mctx, 0);
-                video_player_draw(&video, &mctx, half_width);
+
+                // video_player_draw(&video, &mctx, half_width);
                 // particle_animation_draw(&particle_anim, &mctx, half_width, half_width);
             }
             break;
