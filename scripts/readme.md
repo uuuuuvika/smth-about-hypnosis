@@ -43,3 +43,12 @@ rsync -azP --delete \
   /Users/userfriendly/code/smth-about-hypnosis/ \
   pi@raspberrypi.local:/home/pi/py/smth-about-hypnosis/
 ```
+
+## Sync videos between Mac and Pi
+
+```bash
+rsync -azP --delete \
+  -e ssh \
+  /Users/userfriendly/code/smth-about-hypnosis/assets/output_videos/ \
+  raspberry@raspberrypi.local:/home/raspberry/screens_prjct/screens/assets/output_videos/
+```
