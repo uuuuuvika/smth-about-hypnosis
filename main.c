@@ -58,7 +58,7 @@ int main(int argc, char **argv)
 
     // Initialize video player (optional - won't fail if file doesn't exist)
     // Video is 15fps
-    if (video_player_init(&video, "assets/output_videos/cows.rgb", 30))
+    if (video_player_init(&video, "assets/output_videos/cows.rgb", 60))
     {
         video_enabled = 1;
         printf("Video playback enabled.\n");
@@ -108,7 +108,8 @@ int main(int argc, char **argv)
             if (video_enabled)
             {
                 video_player_draw(&video, &mctx, 0);
-                particle_animation_draw(&particle_anim, &mctx, half_width, half_width);
+                video_player_draw(&video, &mctx, half_width);
+                // particle_animation_draw(&particle_anim, &mctx, half_width, half_width);
             }
             break;
         }
