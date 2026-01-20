@@ -13,7 +13,7 @@
 ```bash
 rsync -azP --delete \
   -e ssh \
-  /Users/userfriendly/code/smth-about-hypnosis/assets/output_videos/ \
+  ../assets/output_videos/ \
   raspberry@raspberrypi.local:/home/raspberry/screens_prjct/screens/assets/output_videos/
 ```
 
