@@ -36,6 +36,8 @@ int main(int argc, char **argv)
     Text text = {0};
     Text bottom_text = {0};
     FrameController fc = {0};
+    VideoPlayer video = {0};
+    int video_enabled = 0;
 
     signal(SIGINT, handle_signal);
     signal(SIGTSTP, handle_signal);
@@ -53,6 +55,18 @@ int main(int argc, char **argv)
     }
 
     particle_animation_init(&particle_anim);
+
+    // Initialize video player (optional - won't fail if file doesn't exist)
+    // Video is 15fps
+    if (video_player_init(&video, "../assets/output_videos/cows.rgb", 15))
+    {
+        video_enabled = 1;
+        printf("Video playback enabled.\n");
+    }
+    else
+    {
+        printf("No video file found, video mode disabled.\n");
+    }
 
     init_frame_controller(&fc, 60, 20, 60);
 
@@ -88,6 +102,15 @@ int main(int argc, char **argv)
             particle_animation_draw(&particle_anim, &mctx, 0, half_width);
             particle_animation_draw(&particle_anim, &mctx, half_width, half_width);
             break;
+
+        case 3:
+            // Video on left half, particles on right half
+            if (video_enabled)
+            {
+                video_player_draw(&video, &mctx, 0);
+                particle_animation_draw(&particle_anim, &mctx, half_width, half_width);
+            }
+            break;
         }
 
         fc.text_frame_counter++;
@@ -99,7 +122,7 @@ int main(int argc, char **argv)
         frames_in_mode++;
         if (frames_in_mode >= mode_frames)
         {
-            mode = (mode + 1) % 3;
+            mode = (mode + 1) % (video_enabled ? 4 : 3);
             frames_in_mode = 0;
             mode_frames = rand_range(mode_min_frames, mode_max_frames);
         }
@@ -107,6 +130,7 @@ int main(int argc, char **argv)
 
     printf("\x1b[36m\nShutting down gracefully.\n\x1b[0m");
 
+    video_player_cleanup(&video);
     led_matrix_delete(mctx.matrix);
     delete_font(text.font);
     free(text.text);
