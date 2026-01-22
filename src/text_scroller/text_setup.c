@@ -28,24 +28,14 @@ int text_setup(MatrixContext *mctx, Text *top, Text *bottom)
         return 0;
     }
 
-    // char *text_content = load_text_from_file("src/text_scroller/ascii.txt");
-    // if (text_content == NULL)
-    // {
-    //     printf("Failed to load text from file.\n");
-    //     delete_font(font);
-    //     return 0;
-    // }
-
-    TextLines *text_lines = load_text_lines_from_file("src/text_scroller/ascii.txt");
-    if (text_lines == NULL)
+    char *text_content = load_text_from_file("src/text_scroller/ascii.txt");
+    if (text_content == NULL)
     {
         printf("Failed to load text from file.\n");
         delete_font(font);
         return 0;
     }
 
-    char *text_content = (text_lines->count > 0) ? text_lines->lines[0] : "";
-    
     int font_width = character_width_font(font, 'W');
     int font_baseline = baseline_font(font);
 

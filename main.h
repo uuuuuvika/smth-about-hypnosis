@@ -76,9 +76,8 @@ void overdraw_half(struct LedCanvas *canvas, int width, int height, int left_hal
 int rand_range(int min, int max);
 
 char *load_text_from_file(const char *filename);
-TextLines *load_text_lines_from_file(const char *filename);
 int text_setup(MatrixContext *mctx, Text *top, Text *bottom);
-void text_update(MatrixContext *mctx, Text *top, Text *bottom, int should_move);
+void text_update(MatrixContext *mctx, Text *top, Text *bottom);
 
 void particle_animation_init(ParticleAnimation *anim);
 void particle_animation_draw(ParticleAnimation *anim, MatrixContext *mctx, int x_offset, int width);
