@@ -56,9 +56,7 @@ int main(int argc, char **argv)
 
     particle_animation_init(&particle_anim);
 
-    // Initialize video player (optional - won't fail if file doesn't exist)
-    // Video is 15fps
-    if (video_player_init(&video, "assets/output_videos/cows.rgb", 60))
+    if (video_player_init(&video, "assets/output_videos/bw_test.rgb", 60))
     {
         video_enabled = 1;
         printf("Video playback enabled.\n");

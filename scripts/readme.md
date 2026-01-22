@@ -1,14 +1,22 @@
 # Optimize video assets
 
 - Install `ffpmeg` : `brew install ffmpeg`
-- Set script permissions: `chmod +x convert_to_raw.sh`
-- Then, run asset optimizer script
+- Setup Directory:
+    Create an `input_videos` folder and place your source files there:
+    > **Note:** Ensure your videos are located at `../assets/input_videos/`
 
-```bash
-./convert_to_raw.sh
-```
+- Grant execution rights to the optimization script and run it:
 
-## Sync videos between Mac and Pi
+1.  ## Set permissions:
+    ```bash
+    chmod +x conver _to_raw.sh
+    ```
+2.   ## Run the optimizer:
+    ```bash
+    ./convert_to_raw.sh
+    ```
+
+# Sync videos between Mac and Pi
 
 ```bash
 rsync -azP --delete \
@@ -17,15 +25,19 @@ rsync -azP --delete \
   raspberry@raspberrypi.local:/home/raspberry/screens_prjct/screens/assets/output_videos/
 ```
 
-## Sync code between Mac and Pi
+# Sync code between Mac and Pi
 
 ```bash
 rsync -azP --delete \
   --filter=':- .gitignore' \
-  --exclude='.git/' --exclude='.DS_Store' \
-  --exclude='.mp4/' --exclude='.env/' \
-  --exclude='.gif/' \
+  --exclude='.git/' \
+  --exclude='.DS_Store' \
+  --exclude='*.mp4' \
+  --exclude='*.mov' \
+  --exclude='*.avi' \
+  --exclude='*.mkv' \
+  --exclude='*.m4v' \
   -e ssh \
-  /Users/userfriendly/code/smth-about-hypnosis/ \
-  pi@raspberrypi.local:/home/pi/py/smth-about-hypnosis/
+  ../ \
+  raspberry@raspberrypi.local:/home/raspberry/screens_prjct/screens/
 ```

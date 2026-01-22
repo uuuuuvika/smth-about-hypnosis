@@ -2,7 +2,7 @@
 
 # Video to Raw RGB Converter
 # Converts video files to raw RGB24 format for LED matrix playback
-# Output: 64x32 resolution, 15fps, raw RGB bytes
+# Output: 64x32 resolution, [FPS]fps, raw RGB bytes
 
 # Configuration - Change these folder names as needed
 INPUT_FOLDER="../assets/input_videos"
@@ -107,8 +107,6 @@ echo "✅ Processed: $processed files"
 echo "⚠️  Skipped: $skipped files"
 echo "📁 Output folder: $OUTPUT_FOLDER/"
 echo ""
-echo "To use a video, copy the .rgb file to the Pi and rename it to 'video.rgb'"
-echo "in the same directory as the 'pro' executable."
 
 if [ $processed -eq 0 ]; then
     echo ""
