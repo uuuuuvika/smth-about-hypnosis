@@ -48,20 +48,29 @@ typedef struct {
     char *buffer;
 } TextLines;
 
-
 typedef struct
 {
     struct LedFont *font;
     int font_width;
     int font_baseline;
     struct Color color;
-    char *text;
+    TextLines *lines;
     int x_orig;
     int y_orig;
     int x;
     int y;
     int letter_spacing;
 } Text;
+
+typedef struct
+{
+    int text_frame_counter;
+    int text_frame_skip;
+    int particle_frame_counter;
+    int particle_frame_skip;
+    int target_fps;
+    int frame_delay_us;
+} FrameController;
 
 typedef struct
 {
@@ -76,8 +85,9 @@ void overdraw_half(struct LedCanvas *canvas, int width, int height, int left_hal
 int rand_range(int min, int max);
 
 char *load_text_from_file(const char *filename);
+TextLines *load_text_lines_from_file(const char *filename);
 int text_setup(MatrixContext *mctx, Text *top, Text *bottom);
-void text_update(MatrixContext *mctx, Text *top, Text *bottom);
+void text_update(MatrixContext *mctx, Text *top, Text *bottom, int should_move);
 
 void particle_animation_init(ParticleAnimation *anim);
 void particle_animation_draw(ParticleAnimation *anim, MatrixContext *mctx, int x_offset, int width);
