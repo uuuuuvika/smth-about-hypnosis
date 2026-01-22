@@ -4,6 +4,7 @@
 #include <MagickWand/MagickWand.h>
 
 #include <led-matrix-c.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
@@ -26,6 +27,20 @@ typedef struct {
     double time;
     int num_particles;
 } ParticleAnimation;
+
+typedef struct {
+    FILE *file;
+    uint8_t *frame_buffer;
+    int width;
+    int height;
+    int frame_size;
+    int total_frames;
+    int current_frame;
+    int frame_skip;
+    int frame_counter;
+    int loop;
+    int playing;
+} VideoPlayer;
 
 typedef struct {
     char **lines;
@@ -66,6 +81,11 @@ void text_update(MatrixContext *mctx, Text *top, Text *bottom);
 
 void particle_animation_init(ParticleAnimation *anim);
 void particle_animation_draw(ParticleAnimation *anim, MatrixContext *mctx, int x_offset, int width);
+
+int video_player_init(VideoPlayer *vp, const char *filepath, int video_fps);
+void video_player_draw(VideoPlayer *vp, MatrixContext *mctx, int x_offset);
+void video_player_reset(VideoPlayer *vp);
+void video_player_cleanup(VideoPlayer *vp);
 
 void free_text_lines(TextLines *text_lines);
 

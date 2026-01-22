@@ -1,12 +1,17 @@
 #!/bin/bash
 
-# Video Crop Converter
-# Converts all video files from input folder to MP4s in output folder
-# Using 128x32 resolution, 15fps, no duration limit
+# Video to Raw RGB Converter
+# Converts video files to raw RGB24 format for LED matrix playback
+# Output: 64x32 resolution, [FPS]fps, raw RGB bytes
 
 # Configuration - Change these folder names as needed
-INPUT_FOLDER="/Users/userfriendly/Dropbox/Proyectos/vika-bday-screen/raw-footage"
-OUTPUT_FOLDER="/Users/userfriendly/Dropbox/Proyectos/vika-bday-screen/optimized-videos"
+INPUT_FOLDER="../assets/input_videos"
+OUTPUT_FOLDER="../assets/output_videos"
+
+# Video settings
+WIDTH=64
+HEIGHT=32
+FPS=30
 
 # Create directories if they don't exist
 mkdir -p "$INPUT_FOLDER"
@@ -34,10 +39,10 @@ processed=0
 skipped=0
 file_number=1
 
-echo "Starting batch conversion..."
+echo "Starting batch conversion to raw RGB..."
 echo "Input folder: $INPUT_FOLDER/"
 echo "Output folder: $OUTPUT_FOLDER/"
-echo "Settings: 128x32, 15fps, no duration limit"
+echo "Settings: ${WIDTH}x${HEIGHT}, ${FPS}fps, raw RGB24"
 echo "----------------------------------------"
 
 # Process each video file
@@ -48,33 +53,43 @@ for ext in mp4 mov avi mkv m4v MP4 MOV AVI MKV M4V; do
     
         # Get filename without path and extension
         filename=$(basename "$video_file")
+        name_no_ext="${filename%.*}"
         
-        # Output MP4 path with sequential numbering
-        output_video="$OUTPUT_FOLDER/${file_number}.mp4"
+        # Output raw file path
+        output_raw="$OUTPUT_FOLDER/${name_no_ext}.rgb"
         
         # Check if output already exists
-        if [ -f "$output_video" ]; then
-            echo "⚠️  Skipping $filename (${file_number}.mp4 already exists)"
+        if [ -f "$output_raw" ]; then
+            echo "⚠️  Skipping $filename (${name_no_ext}.rgb already exists)"
             ((skipped++))
             ((file_number++))
             continue
         fi
         
-        echo "🎬 Processing: $filename → ${file_number}.mp4"
+        echo "🎬 Processing: $filename → ${name_no_ext}.rgb"
         
-        # Convert video with cropping and fps limit (optimized for RGB LED matrix)
-        echo "   🎥 Converting video..."
+        # Convert video to raw RGB
+        # - Scale with aspect ratio preservation, then crop to exact size
+        # - Output raw RGB24 pixels (no header)
+        echo "   🎥 Converting to raw RGB..."
         if ffmpeg -loglevel error -i "$video_file" \
-            -vf "scale=128:32:force_original_aspect_ratio=increase,crop=128:32" \
-            -c:v libx264 -preset slow -crf 18 -pix_fmt rgb24 \
-            -an \
-            -y "$output_video"; then
+            -vf "fps=${FPS},scale=${WIDTH}:${HEIGHT}:force_original_aspect_ratio=increase,crop=${WIDTH}:${HEIGHT}" \
+            -f rawvideo -pix_fmt rgb24 \
+            -y "$output_raw"; then
             
             # Get file sizes for comparison
             original_size=$(du -h "$video_file" | cut -f1)
-            output_size=$(du -h "$output_video" | cut -f1)
+            output_size=$(du -h "$output_raw" | cut -f1)
             
-            echo "   ✅ Success: $filename → ${file_number}.mp4 ($original_size → $output_size)"
+            # Calculate frame count
+            frame_size=$((WIDTH * HEIGHT * 3))
+            file_bytes=$(stat -f%z "$output_raw" 2>/dev/null || stat -c%s "$output_raw" 2>/dev/null)
+            frame_count=$((file_bytes / frame_size))
+            duration_sec=$((frame_count / FPS))
+            
+            echo "   ✅ Success: $filename → ${name_no_ext}.rgb"
+            echo "      Size: $original_size → $output_size"
+            echo "      Frames: $frame_count (~${duration_sec}s at ${FPS}fps)"
             ((processed++))
             ((file_number++))
         else
@@ -91,6 +106,7 @@ echo "Conversion complete!"
 echo "✅ Processed: $processed files"
 echo "⚠️  Skipped: $skipped files"
 echo "📁 Output folder: $OUTPUT_FOLDER/"
+echo ""
 
 if [ $processed -eq 0 ]; then
     echo ""
