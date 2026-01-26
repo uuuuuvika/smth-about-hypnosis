@@ -28,6 +28,20 @@ typedef struct {
     int num_particles;
 } ParticleAnimation;
 
+// typedef struct {
+//     FILE *file;
+//     uint8_t *frame_buffer;
+//     int width;
+//     int height;
+//     int frame_size;
+//     int total_frames;
+//     int current_frame;
+//     int frame_skip;
+//     int frame_counter;
+//     int loop;
+//     int playing;
+// } VideoPlayer;
+
 typedef struct {
     FILE *file;
     uint8_t *frame_buffer;
@@ -36,8 +50,11 @@ typedef struct {
     int frame_size;
     int total_frames;
     int current_frame;
-    int frame_skip;
-    int frame_counter;
+
+    // --- Timing ---
+    float frame_step;        // Number of video frames to advance per project tick
+    float frame_accumulator; // Tracks fractional frame progress
+    
     int loop;
     int playing;
 } VideoPlayer;
@@ -68,7 +85,7 @@ typedef struct
     int text_frame_skip;
     int particle_frame_counter;
     int particle_frame_skip;
-    int target_fps;
+    int prjct_fps;
     int frame_delay_us;
 } FrameController;
 
@@ -92,9 +109,8 @@ void text_update(MatrixContext *mctx, Text *top, Text *bottom, int should_move);
 void particle_animation_init(ParticleAnimation *anim);
 void particle_animation_draw(ParticleAnimation *anim, MatrixContext *mctx, int x_offset, int width);
 
-int video_player_init(VideoPlayer *vp, const char *filepath, int video_fps);
+int video_player_init(VideoPlayer *vp, const char *filepath, int video_fps, int prjct_fps);
 void video_player_draw(VideoPlayer *vp, MatrixContext *mctx, int x_offset);
-void video_player_reset(VideoPlayer *vp);
 void video_player_cleanup(VideoPlayer *vp);
 
 void free_text_lines(TextLines *text_lines);

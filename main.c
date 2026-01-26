@@ -9,13 +9,13 @@ void handle_signal(int sig)
 }
 
 
-void init_frame_controller(FrameController *fc, int target_fps,
+void init_frame_controller(FrameController *fc, int prjct_fps,
                            int text_update_rate, int particle_update_rate)
 {
-    fc->target_fps = target_fps;
-    fc->frame_delay_us = 1000000 / target_fps;
-    fc->text_frame_skip = target_fps / text_update_rate;
-    fc->particle_frame_skip = target_fps / particle_update_rate;
+    fc->prjct_fps = prjct_fps;
+    fc->frame_delay_us = 1000000 / prjct_fps;
+    fc->text_frame_skip = prjct_fps / text_update_rate;
+    fc->particle_frame_skip = prjct_fps / particle_update_rate;
     fc->text_frame_counter = 0;
     fc->particle_frame_counter = 0;
 }
@@ -46,19 +46,16 @@ int main(int argc, char **argv)
     }
 
     particle_animation_init(&particle_anim);
+    init_frame_controller(&fc, 30, 10, 60);
 
     //lets use 30 FPS video (for now)
-    if (video_player_init(&video, "assets/output_videos/cube.rgb", 30))
+    if (video_player_init(&video, "assets/output_videos/cube.rgb", 30, fc.prjct_fps))
     {
         video_enabled = 1;
-        printf("Video playback enabled.\n");
+        printf("Video playback enabled at 30fps (Project: %dfps).\n", fc.prjct_fps);
     }
     else
-    {
         printf("No video file found, video mode disabled.\n");
-    }
-
-    init_frame_controller(&fc, 30, 30, 60);
 
     int mode = 3;
     int frames_in_mode = 0;
@@ -70,7 +67,12 @@ int main(int argc, char **argv)
 
     while (running)
     {
+        struct timespec start_time, end_time;
+        clock_gettime(CLOCK_MONOTONIC, &start_time);
         led_canvas_fill(mctx.offscreen_canvas, 0, 0, 0);
+
+        fc.text_frame_counter++;
+        fc.particle_frame_counter++;
 
         switch (mode)
         {
@@ -97,17 +99,24 @@ int main(int argc, char **argv)
         case 3:
             if (video_enabled)
             {
-                // text_update(&mctx, &text, &bottom_text,
-                //             fc.text_frame_counter % fc.text_frame_skip == 0);
-                // overdraw_half(mctx.offscreen_canvas, mctx.width, mctx.height, 1);
+                text_update(&mctx, &text, &bottom_text,
+                            fc.text_frame_counter % fc.text_frame_skip == 0);
+                overdraw_half(mctx.offscreen_canvas, mctx.width, mctx.height, 1);
                 video_player_draw(&video, &mctx, 0);
-                video_player_draw(&video, &mctx, half_width);
-                //usleep(25000);
+                //video_player_draw(&video, &mctx, half_width);
             }
             break;
         }
 
         mctx.offscreen_canvas = led_matrix_swap_on_vsync(mctx.matrix, mctx.offscreen_canvas);
+
+        clock_gettime(CLOCK_MONOTONIC, &end_time);
+        long elapsed_us = (end_time.tv_sec - start_time.tv_sec) * 1000000 + 
+                          (end_time.tv_nsec - start_time.tv_nsec) / 1000;
+        
+        if (elapsed_us < fc.frame_delay_us) {
+            usleep(fc.frame_delay_us - elapsed_us);
+        }
 
         frames_in_mode++;
         // if (frames_in_mode >= mode_frames)
