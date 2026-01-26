@@ -6,8 +6,6 @@ A Raspberry Pi-based project for driving RGB LED matrices with custom visuals & 
 
 <img width="2016" height="1008" alt="screens" src="https://github.com/user-attachments/assets/f77d65ed-3c7e-4749-bbfa-b8eccfb43ed2" />
 
-
-
 ## Part 1: Development
 
 This project depends on the [hzeller/rpi-rgb-led-matrix](https://github.com/hzeller/rpi-rgb-led-matrix) library. Both folders **must** reside in the same parent directory.
@@ -20,7 +18,6 @@ git clone [https://github.com/hzeller/rpi-rgb-led-matrix.git](https://github.com
 git clone [https://github.com/your-username/smth-about-hypnosis.git](https://github.com/your-username/smth-about-hypnosis.git)
 
 ```
-Directory Structure:
 ```
 project/
 ├── rpi-rgb-led-matrix/
