@@ -2,12 +2,11 @@
 
 A Raspberry Pi-based project for driving RGB LED matrices with custom visuals & storytelling. It sequence text and animations to tell a narrative... It's like a digital LED comic book!
 
-> **Note:** The project name is currently a work in progress.
+(the project name is currently a work in progress...)
 
----
+
 ## Part 1: Development
 
-### Prerequisites
 This project depends on the [hzeller/rpi-rgb-led-matrix](https://github.com/hzeller/rpi-rgb-led-matrix) library. Both folders **must** reside in the same parent directory.
 
 ```bash
@@ -18,31 +17,32 @@ git clone [https://github.com/hzeller/rpi-rgb-led-matrix.git](https://github.com
 git clone [https://github.com/your-username/smth-about-hypnosis.git](https://github.com/your-username/smth-about-hypnosis.git)
 
 ```
+Directory Structure:
+```
 project/
 ├── rpi-rgb-led-matrix/
 ├── smth-about-hypnosis/
     └── README.md
 ```
-Then, connect to the pi
 
+### Connect to your Raspberry Pi via SSH
 ```bash
 ssh raspberry@raspberrypi.local
 ```
+To rsync your local code with the Pi, refer to the `scripts/readme.md` 
 
-Git pull or rsync your local code with pi's (go to scripts/readme.md). Cool! All set up!
 
-### Build and Run (pro is short for a project)
+### Build and Run
+This will also build `rpi-rgb-led-matrix` library
 
 ```bash
 make pro && sudo ./pro
 ```
 
-this will also build rpi-rgb-led-matrix library which is in our case located in the parent directory
-
-
 ## Part 2: Showcase 
 
 ### Auto start setup
+Run the installation script to set up the project as a systemd service:
 
 ```bash
 cd scripts
