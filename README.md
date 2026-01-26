@@ -4,6 +4,9 @@ A Raspberry Pi-based project for driving RGB LED matrices with custom visuals & 
 
 (the project name is currently a work in progress...)
 
+<img width="2016" height="1008" alt="screens" src="https://github.com/user-attachments/assets/f77d65ed-3c7e-4749-bbfa-b8eccfb43ed2" />
+
+
 
 ## Part 1: Development
 
