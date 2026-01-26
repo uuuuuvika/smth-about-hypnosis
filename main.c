@@ -47,7 +47,8 @@ int main(int argc, char **argv)
 
     particle_animation_init(&particle_anim);
 
-    if (video_player_init(&video, "assets/output_videos/bw_test.rgb", 60))
+    //lets use 30 FPS video (for now)
+    if (video_player_init(&video, "assets/output_videos/cube.rgb", 30))
     {
         video_enabled = 1;
         printf("Video playback enabled.\n");
@@ -57,7 +58,7 @@ int main(int argc, char **argv)
         printf("No video file found, video mode disabled.\n");
     }
 
-    init_frame_controller(&fc, 60, 20, 60);
+    init_frame_controller(&fc, 30, 30, 60);
 
     int mode = 3;
     int frames_in_mode = 0;
@@ -96,13 +97,12 @@ int main(int argc, char **argv)
         case 3:
             if (video_enabled)
             {
-                text_update(&mctx, &text, &bottom_text,
-                            fc.text_frame_counter % fc.text_frame_skip == 0);
-                overdraw_half(mctx.offscreen_canvas, mctx.width, mctx.height, 1);
+                // text_update(&mctx, &text, &bottom_text,
+                //             fc.text_frame_counter % fc.text_frame_skip == 0);
+                // overdraw_half(mctx.offscreen_canvas, mctx.width, mctx.height, 1);
                 video_player_draw(&video, &mctx, 0);
-
-                // video_player_draw(&video, &mctx, half_width);
-                // particle_animation_draw(&particle_anim, &mctx, half_width, half_width);
+                video_player_draw(&video, &mctx, half_width);
+                //usleep(25000);
             }
             break;
         }

@@ -4,7 +4,6 @@
 // - No header, just raw RGB24 pixels
 // - Each frame is width * height * 3 bytes
 // - Frames are stored sequentially
-
 int video_player_init(VideoPlayer *vp, const char *filepath, int video_fps)
 {
     memset(vp, 0, sizeof(VideoPlayer));
@@ -16,7 +15,6 @@ int video_player_init(VideoPlayer *vp, const char *filepath, int video_fps)
         return 0;
     }
 
-    // Default to 64x32 (one panel)
     vp->width = 64;
     vp->height = 32;
     vp->frame_size = vp->width * vp->height * 3;
